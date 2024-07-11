@@ -10,6 +10,7 @@ use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\Calculation\Category;
 use Yajra\DataTables\Facades\DataTables;
@@ -34,12 +35,12 @@ class InventoryController extends Controller
                     if (Auth::user()->status == 'Administrator' || Auth::user()->status == 'Super Admin' || Auth::user()->status == 'Auditor') {
                         $inv->action = '<div class="d-flex align-items-center justify-content-center">
                         <div class="p-1">
-                            <a href="' . route('edit_inventory', ['id' => $inv->id]) . '" class="btn btn-success btn-sm p-0 mt-3" style="width: 24px; height: 24px;">
+                            <a href="' . route('in_inventory', ['id' => $inv->id]) . '" class="btn btn-success btn-sm p-0 mt-3" style="width: 24px; height: 24px;">
                                 <i class="material-icons" style="font-size: 16px;">input</i>
                             </a>
                         </div>
                         <div class="p-1">
-                            <a href="' . route('edit_inventory', ['id' => $inv->id]) . '" class="btn btn-warning btn-sm p-0 mt-3" style="width: 24px; height: 24px;">
+                            <a href="' . route('in_inventory', ['id' => $inv->id]) . '" class="btn btn-warning btn-sm p-0 mt-3" style="width: 24px; height: 24px;">
                                 <i class="material-icons" style="font-size: 16px;">logout</i>
                             </a>
                         </div>
@@ -99,7 +100,7 @@ class InventoryController extends Controller
         // Generate code based on category and iteration
         $category = $request->input('category');
         $lastCode = Inventory::where('category', $category)->orderBy('id', 'desc')->first();
-        $nextId = $lastCode ? intval(substr($lastCode->code, -3)) + 1 : 1;  
+        $nextId = $lastCode ? intval(substr($lastCode->code, -3)) + 1 : 1;
         $code = $category . '-' . str_pad($nextId, 3, '0', STR_PAD_LEFT);
 
         // Assuming Inventory model is used for storing inventory data
@@ -130,7 +131,7 @@ class InventoryController extends Controller
         return redirect()->route('inventory')->with('success', 'Inventory created successfully.');
     }
 
-    public function destroy($id)
+    public function out($id)
     {
         $inventory = inventory::findOrFail($id);
         $inventory->delete();
@@ -138,143 +139,56 @@ class InventoryController extends Controller
         return redirect()->back()->with('success', 'Inventory deleted successfully.');
     }
 
-    public function edit($id)
+    public function in($id)
     {
-        $asset = inventory::findOrFail($id);
-        $userhist = Userhist::where('inv_id', $id)
-            ->where('hand_over_date', $asset->hand_over_date)
-            ->first();
+        $inventory = InventoryTotal::findOrFail($id);
+        $in = Inventory::findOrFail($id);
 
-        // dd($asset);
-        return view('pages.asset.editasset', compact('asset', 'userhist'));
+        return view('pages.asset.editasset', compact('inventory', 'in'));
     }
 
-    public function update(Request $request, $id)
+    public function storein(Request $request, $id)
     {
-        // dd($request);
-        // $request->validate([
-        //     'old_asset_code' => 'nullable',
-        //     'location' => 'required',
-        //     'asset_category' => 'required',
-        //     'asset_position_dept' => 'required',
-        //     'asset_type' => 'required',
-        //     'description' => 'required',
-        //     'serial_number' => 'nullable',
-        //     'acquisition_date' => 'required|date',
-        //     'useful_life' => 'required|numeric',
-        //     'acquisition_value' => 'numeric|default:0',
-        //     'hand_over_date' => 'nullable|date',
-        //     'user' => 'nullable',
-        //     'dept' => 'nullable',
-        //     'note' => 'nullable',
-        // ]);
+        // Validasi input
+        $validator = Validator::make($request->all(), [
+            'period' => 'required|numeric',
+            'date' => 'required|date',
+            'time' => 'required',
+            'pic' => 'required|string',
+            'qty' => 'required|numeric',
+            'price' => 'required|numeric',
+            'location' => 'required|string',
+            'category' => 'required|string',
+            'name' => 'required|string',
+            'unit' => 'required|string',
+        ]);
 
-        $asset = inventory::findOrFail($id);
-        $userhist = Userhist::where('inv_id', $id)
-            ->where('hand_over_date', $asset->hand_over_date)
-            ->first();
-
-        // $asset_code = $asset->asset_code;
-
-        // $parts = explode('-', $asset_code);
-
-        // Mendefinisikan PIC Dept berdasarkan acquisition_value
-        // if ($request->acquisition_value > 2500000) {
-        //     $pic_dept = 'FAT & GA';
-        //     $id1 = 'FG';
-        // } else {
-        //     $pic_dept = 'GA';
-        //     $id1 = 'GA';
-        // }
-
-        // if ($request->location == 'Head Office') {
-        //     $id2 = '01';
-        // } else if ($request->location == 'Office Kendari') {
-        //     $id2 = '02';
-        // } else if ($request->location == 'Site Molore') {
-        //     $id2 = '03';
-        // }
-
-        // Menentukan id3 berdasarkan asset_category
-        // if ($request->asset_category == 'Kendaraan') {
-        //     $id3 = '01';
-        // } elseif ($request->asset_category == 'Mesin') {
-        //     $id3 = '02';
-        // } elseif ($request->asset_category == 'Alat Berat') {
-        //     $id3 = '03';
-        // } elseif ($request->asset_category == 'Alat Lab') {
-        //     $id3 = '04';
-        // } elseif ($request->asset_category == 'Alat Preparasi') {
-        //     $id3 = '05';
-        // } elseif ($request->asset_category == 'Peralatan') {
-        //     $id3 = '06';
-        // } else {
-        //     $id3 = '07'; // Default code if no matching category is found
-        // }
-
-        // $ids = $id1 . ' ' . $id2 . '-' . $id3;
-        // $idc = $parts[0] . '-' . $parts[1];
-
-        // dd($ids, $idc);
-
-        // if ($idc == $ids) {
-        // dd('halo');
-        $asset->update($request->all());
-        // } else {
-        //     $iddb = Inventory::where('asset_code', 'LIKE', "%$ids%")->get(['asset_code']);
-
-        //     if ($iddb->isEmpty()) {
-        //         $iteration = str_pad(1, 4, '0', STR_PAD_LEFT);
-        // dd($iteration);
-        // $id = $id1 . ' ' . $id2 . '-' . $id3 . '-' . $iteration;
-        // $asset['asset_code'] = $id;
-        // $asset['pic_dept'] = $pic_dept;
-        // $asset->update($request->all());
-        // dd($pic_dept);
-        // } else {
-        //     $existingIterations = [];
-
-        // Loop melalui hasil query dan simpan urutan yang ada
-        // foreach ($iddb as $inventory) {
-        //     $asset_code = $inventory->asset_code;
-        //     $parts = explode('-', $asset_code);
-        //     $iteration = end($parts); // Ambil bagian terakhir dari hasil explode
-        //     $existingIterations[] = $iteration;
-        // }
-        // for ($i = 1; $i <= 9999; $i++) {
-        //     $iteration = str_pad($i, 4, '0', STR_PAD_LEFT);
-        //     if (!in_array($iteration, $existingIterations)) {
-        // Urutan kosong ditemukan
-        // $newAssetCode = $ids . '-' . $iteration;
-        // break;
-        // }
-        // }
-        // dd($existingIterations, $newAssetCode);
-        // $asset['asset_code'] = $newAssetCode;
-        // $asset['pic_dept'] = $pic_dept;
-        // dd($asset);
-        // $asset->update($request->all());
-        // }
-        // dd($iddb);
-        // }
-
-        if ($request->store_to_database == 'true') {
-            // dd($request);
-
-            // Ambil ID aset yang baru saja disimpan
-            $inv_id = $asset->id;
-
-            // dd($inv_id);
-
-            // Buat catatan di tabel userhist
-            $hist = Userhist::create([
-                'inv_id' => $inv_id,
-                'hand_over_date' => $request['hand_over_date'], // Pastikan untuk menyesuaikan dengan atribut yang sesuai
-                'user' => $request['user'], // Sesuaikan dengan atribut yang sesuai
-                'dept' => $request['dept'], // Sesuaikan dengan atribut yang sesuai
-                'note' => $request['note'], // Sesuaikan dengan atribut yang sesuai
-            ]);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
         }
+
+        // Ambil data dari InventoryTotal
+        $inventoryTotal = InventoryTotal::findOrFail($id);
+
+        // Simpan data baru ke dalam Inventory
+        $inventory = new Inventory();
+        $inventory->code = $inventoryTotal->code;
+        $inventory->period = $request->period;
+        $inventory->date = $request->date;
+        $inventory->time = $request->time;
+        $inventory->pic = $request->pic;
+        $inventory->qty = $request->qty;
+        $inventory->price = $request->price;
+        $inventory->location = $request->location;
+        $inventory->category = $request->category;
+        $inventory->name = $request->name;
+        $inventory->unit = $request->unit;
+        $inventory->save();
+
+        // Update saldo
+        $saldo = $inventoryTotal->qty + $request->qty;
+        $inventoryTotal->qty = $saldo;
+        $inventoryTotal->save();
 
         return redirect()->route('inventory')->with('success', 'Asset updated successfully.');
     }

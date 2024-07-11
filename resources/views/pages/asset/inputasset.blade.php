@@ -138,7 +138,6 @@
                                     <a href="{{ route('inventory') }}" class="btn btn-danger">Cancel</a>
                                 </div>
                             </form>
-
                         </div>
                     </div>
                 </div>

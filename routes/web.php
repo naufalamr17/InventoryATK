@@ -57,17 +57,9 @@ Route::put('/users/{id}', [AccessController::class, 'update'])->name('update_use
 Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory')->middleware('auth');
 Route::get('/add_inventory', [InventoryController::class, 'addinventory'])->name('add_inventory')->middleware('auth');
 Route::post('/store_inventory', [InventoryController::class, 'store'])->name('store_inventory')->middleware('auth');
-Route::delete('/destroy_inventory/{id}', [InventoryController::class, 'destroy'])->name('destroy_inventory')->middleware('auth');
-Route::get('/inventory/{id}/edit', [InventoryController::class, 'edit'])->name('edit_inventory')->middleware('auth');
-Route::post('/inventory/{id}', [InventoryController::class, 'update'])->name('update_inventory')->middleware('auth');
-Route::get('/history_inventory', [InventoryController::class, 'history'])->name('history_inventory')->middleware('auth');
 Route::get('/data_in', [InventoryController::class, 'repair'])->name('data_in')->middleware('auth');
-Route::get('/input_repair', [InventoryController::class, 'inputrepair'])->name('input_repair')->middleware('auth');
-Route::post('/store_repair', [InventoryController::class, 'storerepair'])->name('store_repair')->middleware('auth');
-Route::get('/get-inventory-data', [InventoryController::class, 'getInventoryData'])->name('get.inventory.data')->middleware('auth');
-Route::get('/dispose_inventory', [InventoryController::class, 'dispose'])->name('dispose_inventory')->middleware('auth');
-Route::get('/input_dispose', [InventoryController::class, 'inputdispose'])->name('input_dispose')->middleware('auth');
-Route::post('/store_dispose', [InventoryController::class, 'storedispose'])->name('store_dispose')->middleware('auth');
+Route::get('/inventory/{id}/in', [InventoryController::class, 'in'])->name('in_inventory')->middleware('auth');
+Route::put('/inventory/{inventory}/storein', [InventoryController::class, 'storein'])->name('store_in')->middleware('auth');
 
 Route::get('/inputexcel', [InventoryController::class, 'inputexcel'])->name('inputexcel')->middleware('auth');
 Route::post('/store_excel', [InventoryController::class, 'storeexcel'])->name('store_excel')->middleware('auth');

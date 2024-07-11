@@ -45,22 +45,6 @@
                     <span class="nav-link-text ms-1">Data Masuk</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link {{ $activePage == 'dispose_inventory' ? 'active bg-gradient-danger' : '' }}" href="{{ route('dispose_inventory') }}" style="color: {{ $activePage == 'dispose_inventory' ? 'white' : 'black' }};">
-                    <div class="text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fas fa-trash-alt" style="color: {{ $activePage == 'dispose_inventory' ? 'white' : 'black' }};"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Dispose Asset</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ $activePage == 'history_inventory' ? 'active bg-gradient-danger' : '' }}" href="{{ route('history_inventory') }}" style="color: {{ $activePage == 'history_inventory' ? 'white' : 'black' }};">
-                    <div class="text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fas fa-history" style="color: {{ $activePage == 'history_inventory' ? 'white' : 'black' }};"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">History Asset</span>
-                </a>
-            </li>
             @if (Auth::check() && Auth::user()->status != 'Auditor')
             <li class="nav-item">
                 <a class="nav-link {{ $activePage == 'report' ? ' active bg-gradient-danger' : '' }}" href="{{ route('report') }}" style="color: {{ $activePage == 'report' ? 'white' : 'black' }};">
