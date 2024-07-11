@@ -136,7 +136,7 @@
                             @if (Auth::check() && (Auth::user()->status != 'Viewers' && Auth::user()->status != 'Auditor'))
                             <div class="ms-auto mb-2">
                                 <a class="btn bg-gradient-dark mb-0" href="{{ route('add_inventory') }}">
-                                    <i class="material-icons text-sm">add</i>&nbsp;&nbsp;Add Asset
+                                    <i class="material-icons text-sm">add</i>&nbsp;&nbsp;Add Inventory
                                 </a>
                             </div>
                             @endif
