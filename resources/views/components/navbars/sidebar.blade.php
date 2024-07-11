@@ -38,11 +38,11 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ $activePage == 'repair_inventory' ? 'active bg-gradient-danger' : '' }}" href="{{ route('repair_inventory') }}" style="color: {{ $activePage == 'repair_inventory' ? 'white' : 'black' }};">
+                <a class="nav-link {{ $activePage == 'data_in' ? 'active bg-gradient-danger' : '' }}" href="{{ route('data_in') }}" style="color: {{ $activePage == 'repair_inventory' ? 'white' : 'black' }};">
                     <div class="text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fas fa-wrench" style="color: {{ $activePage == 'repair_inventory' ? 'white' : 'black' }};"></i>
+                        <i class="fas fa-angle-double-right" style="color: {{ $activePage == 'data_in' ? 'white' : 'black' }};"></i>
                     </div>
-                    <span class="nav-link-text ms-1">Repair Asset</span>
+                    <span class="nav-link-text ms-1">Data Masuk</span>
                 </a>
             </li>
             <li class="nav-item">

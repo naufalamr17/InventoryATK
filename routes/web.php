@@ -61,7 +61,7 @@ Route::delete('/destroy_inventory/{id}', [InventoryController::class, 'destroy']
 Route::get('/inventory/{id}/edit', [InventoryController::class, 'edit'])->name('edit_inventory')->middleware('auth');
 Route::post('/inventory/{id}', [InventoryController::class, 'update'])->name('update_inventory')->middleware('auth');
 Route::get('/history_inventory', [InventoryController::class, 'history'])->name('history_inventory')->middleware('auth');
-Route::get('/repair_inventory', [InventoryController::class, 'repair'])->name('repair_inventory')->middleware('auth');
+Route::get('/data_in', [InventoryController::class, 'repair'])->name('data_in')->middleware('auth');
 Route::get('/input_repair', [InventoryController::class, 'inputrepair'])->name('input_repair')->middleware('auth');
 Route::post('/store_repair', [InventoryController::class, 'storerepair'])->name('store_repair')->middleware('auth');
 Route::get('/get-inventory-data', [InventoryController::class, 'getInventoryData'])->name('get.inventory.data')->middleware('auth');

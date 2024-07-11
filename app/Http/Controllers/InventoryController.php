@@ -313,43 +313,26 @@ class InventoryController extends Controller
         return view('pages.asset.history', compact('userhist'));
     }
 
-    public function repair()
+    public function repair(Request $request)
     {
-        if (Auth::user()->status == 'Administrator' || Auth::user()->status == 'Super Admin' || Auth::user()->status == 'Auditor' || Auth::user()->hirar == 'Manager' || Auth::user()->hirar == 'Deputy General Manager') {
-            $inventory = inventory::join('repairstatuses', 'inventories.id', '=', 'repairstatuses.inv_id')
-                ->select(
-                    'inventories.asset_code',
-                    'inventories.asset_type',
-                    'inventories.serial_number',
-                    'inventories.useful_life',
-                    'inventories.acquisition_date',
-                    'inventories.location',
-                    'repairstatuses.status',
-                    'repairstatuses.tanggal_kerusakan',
-                    'repairstatuses.tanggal_pengembalian',
-                    'repairstatuses.note'
-                )->get();
-        } else {
-            $inventory = inventory::join('repairstatuses', 'inventories.id', '=', 'repairstatuses.inv_id')
-                ->select(
-                    'inventories.asset_code',
-                    'inventories.asset_type',
-                    'inventories.serial_number',
-                    'inventories.useful_life',
-                    'inventories.acquisition_date',
-                    'inventories.location',
-                    'repairstatuses.status',
-                    'repairstatuses.tanggal_kerusakan',
-                    'repairstatuses.tanggal_pengembalian',
-                    'repairstatuses.note'
-                )
-                ->where('inventories.location', Auth::user()->location)
-                ->get();
+        if ($request->ajax()) {
+            // Query inventaris berdasarkan status pengguna
+            if (Auth::user()->status == 'Administrator' || Auth::user()->status == 'Super Admin' || Auth::user()->status == 'Auditor' || Auth::user()->hirar == 'Manager' || Auth::user()->hirar == 'Deputy General Manager') {
+                $inventory = Inventory::orderBy('code', 'asc')->get();
+            } else {
+                $inventory = Inventory::where('location', Auth::user()->location)
+                    ->orderBy('code', 'asc')->get();
+            }
+
+            // Mengembalikan DataTables dengan data inventaris yang sudah diproses
+            return DataTables::of($inventory)
+                ->addColumn('action', function ($inventory) {
+                    return $inventory->action ?? '';
+                })
+                ->make(true);
         }
 
-        // dd($inventory);
-
-        return view('pages.asset.repair', compact('inventory'));
+        return view('pages.asset.repair');
     }
 
     public function inputrepair()

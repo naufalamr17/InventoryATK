@@ -23,7 +23,7 @@
 
         /* CSS to make the table scrollable */
         .table-responsive {
-            max-height: 400px;
+            max-height: 500px;
             /* Set the desired maximum height */
             overflow-y: auto;
         }
@@ -89,7 +89,7 @@
         }
 
         /* Media query for landscape orientation on mobile devices */
-        @media only screen and (max-width: 600px){
+        @media only screen and (max-width: 600px) {
             .modal-content {
                 width: 90%;
                 max-width: none;
@@ -99,10 +99,10 @@
         }
     </style>
 
-    <x-navbars.sidebar activePage="repair_inventory"></x-navbars.sidebar>
+    <x-navbars.sidebar activePage="data_in"></x-navbars.sidebar>
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
         <!-- Navbar -->
-        <x-navbars.navs.auth titlePage="REPAIR ASSET"></x-navbars.navs.auth>
+        <x-navbars.navs.auth titlePage="Data In"></x-navbars.navs.auth>
         <!-- End Navbar -->
         <div class="container-fluid py-4">
             <div class="row">
@@ -133,12 +133,12 @@
                                     <i class="fas fa-camera"></i>
                                 </button>
                             </div>
-                            @if (Auth::check() && Auth::user()->status != 'Viewers')
-                            <div class="ms-auto mb-2">
-                                <a class="btn bg-gradient-dark mb-0" href="{{ route('input_repair') }}">
-                                    <i class="material-icons text-sm">add</i>&nbsp;&nbsp;Breakdown Asset
+                            @if (Auth::check() && (Auth::user()->status != 'Viewers' && Auth::user()->status != 'Auditor'))
+                            <!-- <div class="ms-auto mb-2">
+                                <a class="btn bg-gradient-dark mb-0" href="{{ route('add_inventory') }}">
+                                    <i class="material-icons text-sm">add</i>&nbsp;&nbsp;Add Inventory
                                 </a>
-                            </div>
+                            </div> -->
                             @endif
 
                             <!-- The Modal -->
@@ -156,52 +156,20 @@
                                 <table id="inventoryTable" class="table align-items-center mb-0">
                                     <thead>
                                         <tr>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Kode Asset') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Jenis') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Serial') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Sisa Waktu Pakai (hari)') }}</th>
+                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Code') }}</th>
+                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Period') }}</th>
+                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Date') }}</th>
+                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Time') }}</th>
+                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('PIC') }}</th>
+                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Qty') }}</th>
+                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Price') }}</th>
                                             <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Location') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Status') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Tanggal Kerusakan') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Tanggal Pengembalian') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Remarks') }}</th>
+                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Category') }}</th>
+                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Name') }}</th>
+                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Unit') }}</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        @foreach($inventory as $item)
-                                        <tr class="text-center" style="font-size: 14px;">
-                                            <td>{{ $item->asset_code ?? '-' }}</td>
-                                            <td>{{ $item->asset_type ?? '-' }}</td>
-                                            <td>{{ $item->serial_number ?? '-' }}</td>
-                                            <?php
-                                            if ($item->acquisition_date === '-') {
-                                                $message = "Tanggal tidak terdefinisi";
-                                            } else {
-                                                $acquisitionDate = new DateTime($item->acquisition_date);
-                                                $usefulLife = $item->useful_life * 365; // Convert useful life from years to days
-                                                $endOfUsefulLife = clone $acquisitionDate;
-                                                $endOfUsefulLife->modify("+{$usefulLife} days");
-
-                                                $currentDate = new DateTime();
-                                                $interval = $currentDate->diff($endOfUsefulLife);
-
-                                                if ($currentDate > $endOfUsefulLife) {
-                                                    $remainingDays = -$interval->days; // Use negative value for overdue days
-                                                } else {
-                                                    $remainingDays = $interval->days;
-                                                }
-
-                                                $message = "{$remainingDays} hari";
-                                            }
-                                            ?>
-                                            <td>{{ $message }}</td>
-                                            <td>{{ $item->location ?? '-' }}</td>
-                                            <td>{{ $item->status ?? '-' }}</td>
-                                            <td>{{ $item->tanggal_kerusakan ?? '-' }}</td>
-                                            <td>{{ $item->tanggal_pengembalian ?? '-' }}</td>
-                                            <td>{{ $item->note ?? '-' }}</td>
-                                        </tr>
-                                        @endforeach
+                                    <tbody class="text-center">
                                     </tbody>
                                 </table>
                             </div>
@@ -220,33 +188,106 @@
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <!-- Initialize DataTable -->
     <script>
+        function number_format(number, decimals, dec_point, thousands_sep) {
+            number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
+            var n = !isFinite(+number) ? 0 : +number,
+                prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+                sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+                dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+                s = '',
+                toFixedFix = function(n, prec) {
+                    var k = Math.pow(10, prec);
+                    return '' + Math.round(n * k) / k;
+                };
+            // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+            s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+            if (s[0].length > 3) {
+                s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+            }
+            if ((s[1] || '').length < prec) {
+                s[1] = s[1] || '';
+                s[1] += new Array(prec - s[1].length + 1).join('0');
+            }
+            return s.join(dec);
+        }
+
         $(document).ready(function() {
             var table = $('#inventoryTable').DataTable({
-                "pageLength": 50,
-                "columnDefs": [{
-                        "orderable": true,
-                        "targets": 7
-                    }, // Enable ordering on the 8th column (index 7)
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('inventory') }}",
+                columns: [{
+                        data: 'code',
+                        name: 'code'
+                    },
                     {
-                        "orderable": false,
-                        "targets": '_all'
-                    } // Disable ordering on all other columns
+                        data: 'period',
+                        name: 'period'
+                    },
+                    {
+                        data: 'date',
+                        name: 'date'
+                    },
+                    {
+                        data: 'time',
+                        name: 'time'
+                    },
+                    {
+                        data: 'pic',
+                        name: 'pic'
+                    },
+                    {
+                        data: 'qty',
+                        name: 'qty'
+                    },
+                    {
+                        data: 'price',
+                        name: 'price',
+                        render: function(data, type, row) {
+                            return number_format(data, 0, ',', '.');
+                        }
+                    },
+                    {
+                        data: 'location',
+                        name: 'location'
+                    },
+                    {
+                        data: 'category',
+                        name: 'category'
+                    },
+                    {
+                        data: 'name',
+                        name: 'name'
+                    },
+                    {
+                        data: 'unit',
+                        name: 'unit'
+                    }
                 ],
-                "order": [
-                    [6, 'desc']
+                pageLength: 50,
+                order: [
+                    [2, 'desc']
                 ],
-                "dom": '<"top">rt<"bottom"ip><"clear">',
+                dom: '<"top">rt<"bottom"ip><"clear">',
+                language: {
+                    processing: "<div class='d-flex justify-content-center align-items-center' style='position: fixed; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.8); top: 0; left: 0; z-index: 1000;'>" +
+                        "<div class='spinner-border' role='status'>" +
+                        "<span class='sr-only'>Loading...</span>" +
+                        "</div>" +
+                        "</div>"
+                }
             });
 
-            // Add the search functionality
-            $('#searchbox').on('keyup', function() {
-                table.search(this.value).draw();
+            var typingTimer;                // Timer identifier
+            var doneTypingInterval = 3000;  // Time in ms (3 seconds)
 
-                if (this.value.length >= 13) {
-                    setTimeout(() => {
-                        this.select(); // Seleksi seluruh teks di dalam kotak pencarian
-                    }, 2000);
-                }
+            $('#searchbox').on('keyup', function() {
+                clearTimeout(typingTimer);
+                var searchbox = this;
+                typingTimer = setTimeout(function() {
+                    $(searchbox).select();
+                }, doneTypingInterval);
+                table.search(this.value).draw();
             });
         });
     </script>
