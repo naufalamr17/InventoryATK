@@ -34,23 +34,20 @@ class InventoryController extends Controller
                         $inv->action = '<div class="d-flex align-items-center justify-content-center">
                         <div class="p-1">
                             <a href="' . route('edit_inventory', ['id' => $inv->id]) . '" class="btn btn-success btn-sm p-0 mt-3" style="width: 24px; height: 24px;">
-                                <i class="material-icons" style="font-size: 16px;">edit</i>
+                                <i class="material-icons" style="font-size: 16px;">input</i>
                             </a>
                         </div>
-                        <div class="mx-1"></div>
-                        <form action="' . route('destroy_inventory', ['id' => $inv->id]) . '" method="POST" onsubmit="return confirm(\'Are you sure you want to delete this asset?\');">
-                            ' . csrf_field() . '
-                            ' . method_field('DELETE') . '
-                            <button type="submit" class="btn btn-danger btn-sm p-0 mt-3" style="width: 24px; height: 24px;">
-                                <i class="material-icons" style="font-size: 16px;">close</i>
-                            </button>
-                        </form>
+                        <div class="p-1">
+                            <a href="' . route('edit_inventory', ['id' => $inv->id]) . '" class="btn btn-warning btn-sm p-0 mt-3" style="width: 24px; height: 24px;">
+                                <i class="material-icons" style="font-size: 16px;">logout</i>
+                            </a>
+                        </div>
                     </div>';
                     } elseif (Auth::user()->status == 'Modified') {
                         $inv->action = '<div class="d-flex align-items-center justify-content-center">
                         <div class="p-1">
                             <a href="' . route('edit_inventory', ['id' => $inv->id]) . '" class="btn btn-success btn-sm p-0 mt-3" style="width: 24px; height: 24px;">
-                                <i class="material-icons" style="font-size: 16px;">edit</i>
+                                <i class="material-icons" style="font-size: 16px;">input</i>
                             </a>
                         </div>
                     </div>';
