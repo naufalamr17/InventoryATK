@@ -156,24 +156,17 @@
                                 <table id="inventoryTable" class="table align-items-center mb-0">
                                     <thead>
                                         <tr>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Kode Asset') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Kode Asset Lama') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Kategori Asset') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Asset Position') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Jenis') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Merk') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Description') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Serial') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Tanggal Perolehan') }}</th>
-                                            @if (Auth::check() && (Auth::user()->location != 'Site Molore' && Auth::user()->location != 'Office Kendari'))
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Nilai Perolehan') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Nilai Saat Ini') }}</th>
-                                            @endif
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Sisa Waktu Pakai (hari)') }}</th>
+                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Code') }}</th>
+                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Period') }}</th>
+                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Date') }}</th>
+                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Time') }}</th>
+                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('PIC') }}</th>
+                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Qty') }}</th>
+                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Price') }}</th>
                                             <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Location') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Status') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('User') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Dept') }}</th>
+                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Category') }}</th>
+                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Name') }}</th>
+                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Unit') }}</th>
                                             @if (Auth::check() && (Auth::user()->status == 'Administrator' || Auth::user()->status == 'Modified' || Auth::user()->status == 'Super Admin'))
                                             <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Action') }}</th>
                                             @endif
@@ -227,93 +220,58 @@
                 serverSide: true,
                 ajax: "{{ route('inventory') }}",
                 columns: [{
-                        data: 'asset_code',
-                        name: 'asset_code'
+                        data: 'code',
+                        name: 'code'
                     },
                     {
-                        data: 'old_asset_code',
-                        name: 'old_asset_code',
-                        render: function(data) {
-                            return data != 0 ? data : '-';
+                        data: 'period',
+                        name: 'period'
+                    },
+                    {
+                        data: 'date',
+                        name: 'date'
+                    },
+                    {
+                        data: 'time',
+                        name: 'time'
+                    },
+                    {
+                        data: 'pic',
+                        name: 'pic'
+                    },
+                    {
+                        data: 'qty',
+                        name: 'qty'
+                    },
+                    {
+                        data: 'price',
+                        name: 'price',
+                        render: function(data, type, row) {
+                            return number_format(data, 0, ',', '.');
                         }
-                    },
-                    {
-                        data: 'asset_category',
-                        name: 'asset_category'
-                    },
-                    {
-                        data: 'asset_position_dept',
-                        name: 'asset_position_dept'
-                    },
-                    {
-                        data: 'asset_type',
-                        name: 'asset_type'
-                    },
-                    {
-                        data: 'merk',
-                        name: 'merk',
-                        render: function(data) {
-                            return data ? data : '-';
-                        }
-                    },
-                    {
-                        data: 'description',
-                        name: 'description'
-                    },
-                    {
-                        data: 'serial_number',
-                        name: 'serial_number',
-                        render: function(data) {
-                            return data ? data : '-';
-                        }
-                    },
-                    {
-                        data: 'acquisition_date',
-                        name: 'acquisition_date'
-                    },
-                    @if(Auth::check() && (Auth::user() -> location != 'Site Molore' && Auth::user() -> location != 'Office Kendari')) {
-                        data: 'acquisition_value',
-                        name: 'acquisition_value',
-                        render: function(data) {
-                            return data == 0 ? '-' : number_format(data, 0, ',', '.');
-                        }
-                    },
-                    {
-                        data: 'depreciated_value',
-                        name: 'depreciated_value'
-                    },
-                    @endif {
-                        data: 'message',
-                        name: 'message'
                     },
                     {
                         data: 'location',
                         name: 'location'
                     },
                     {
-                        data: 'status',
-                        name: 'status'
+                        data: 'category',
+                        name: 'category'
                     },
                     {
-                        data: 'user',
-                        name: 'user',
-                        render: function(data) {
-                            return data ? data : '-';
-                        }
+                        data: 'name',
+                        name: 'name'
                     },
                     {
-                        data: 'dept',
-                        name: 'dept',
-                        render: function(data) {
-                            return data ? data : '-';
-                        }
+                        data: 'unit',
+                        name: 'unit'
                     },
-                    @if(Auth::check() && (Auth::user() -> status == 'Administrator' || Auth::user() -> status == 'Super Admin' || Auth::user() -> status == 'Modified')) {
+                    @if(Auth::check() && (Auth::user() -> status == 'Administrator' || Auth::user() -> status == 'Modified' || Auth::user() -> status == 'Super Admin')) {
                         data: 'action',
                         name: 'action',
                         orderable: false,
                         searchable: false
-                    }
+                    },
                     @endif
                 ],
                 pageLength: 50,
@@ -330,14 +288,16 @@
                 }
             });
 
-            $('#searchbox').on('keyup', function() {
-                table.search(this.value).draw();
+            var typingTimer;                // Timer identifier
+            var doneTypingInterval = 3000;  // Time in ms (3 seconds)
 
-                if (this.value.length >= 13) {
-                    setTimeout(() => {
-                        this.select();
-                    }, 2000);
-                }
+            $('#searchbox').on('keyup', function() {
+                clearTimeout(typingTimer);
+                var searchbox = this;
+                typingTimer = setTimeout(function() {
+                    $(searchbox).select();
+                }, doneTypingInterval);
+                table.search(this.value).draw();
             });
         });
     </script>

@@ -22,62 +22,14 @@ class InventoryController extends Controller
         if ($request->ajax()) {
             // Query inventaris berdasarkan status pengguna
             if (Auth::user()->status == 'Administrator' || Auth::user()->status == 'Super Admin' || Auth::user()->status == 'Auditor' || Auth::user()->hirar == 'Manager' || Auth::user()->hirar == 'Deputy General Manager') {
-                $inventory = Inventory::where('status', '!=', 'Dispose')->orderBy('acquisition_date', 'desc')->get();
+                $inventory = Inventory::orderBy('code', 'asc')->get();
             } else {
-                $inventory = Inventory::where('status', '!=', 'Dispose')
-                    ->where('location', Auth::user()->location)
-                    ->orderBy('acquisition_date', 'desc')->get();
+                $inventory = Inventory::where('location', Auth::user()->location)
+                    ->orderBy('code', 'asc')->get();
             }
 
             // Menghitung nilai terdepresiasi dan pesan sisa umur
             $inventory = $inventory->map(function ($inv) {
-                if ($inv->acquisition_date === '-') {
-                    $message = "Tanggal tidak terdefinisi";
-                    $depreciatedValue = "-";
-                } else {
-                    $acquisitionDate = new DateTime($inv->acquisition_date);
-                    $usefulLifeYears = $inv->useful_life;
-                    $currentDate = new DateTime();
-
-                    $endOfUsefulLife = clone $acquisitionDate;
-                    $endOfUsefulLife->modify("+{$usefulLifeYears} years");
-
-                    $interval = $currentDate->diff($endOfUsefulLife);
-
-                    if ($currentDate > $endOfUsefulLife) {
-                        $remainingDays = -$interval->days;
-                    } else {
-                        $remainingDays = $interval->days;
-                    }
-
-                    $message = "{$remainingDays} hari";
-
-                    $depreciationRate = 1 / $usefulLifeYears;
-
-                    $acquisitionValue = $inv->acquisition_value;
-                    $yearsUsed = $acquisitionDate->diff($currentDate)->y;
-                    $depreciatedValue = $acquisitionValue;
-                    $accumulatedDepreciation = 0;
-
-                    for ($year = 1; $year <= $yearsUsed; $year++) {
-                        $annualDepreciation = $depreciatedValue * $depreciationRate;
-                        $accumulatedDepreciation += $annualDepreciation;
-                        $depreciatedValue -= $annualDepreciation;
-
-                        if ($depreciatedValue < 0) {
-                            $depreciatedValue = 0;
-                            break;
-                        }
-                    }
-
-                    if ($usefulLifeYears == 0) {
-                        $depreciatedValue = $acquisitionValue;
-                    }
-                }
-
-                $inv->message = $message;
-                $inv->depreciated_value = $depreciatedValue === '-' ? '-' : number_format($depreciatedValue, 0, ',', '.');
-
                 // Menetapkan variabel action berdasarkan status pengguna
                 if (Auth::check()) {
                     if (Auth::user()->status == 'Administrator' || Auth::user()->status == 'Super Admin' || Auth::user()->status == 'Auditor') {
@@ -114,12 +66,6 @@ class InventoryController extends Controller
             return DataTables::of($inventory)
                 ->addColumn('action', function ($inventory) {
                     return $inventory->action ?? '';
-                })
-                ->addColumn('message', function ($inventory) {
-                    return $inventory->message ?? '';
-                })
-                ->addColumn('depreciated_value', function ($inventory) {
-                    return $inventory->depreciated_value ?? '';
                 })
                 ->rawColumns(['action']) // Menggunakan rawColumns untuk memproses tag HTML
                 ->make(true);
