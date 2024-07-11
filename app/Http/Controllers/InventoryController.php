@@ -324,11 +324,17 @@ class InventoryController extends Controller
                     ->orderBy('code', 'asc')->get();
             }
 
+            // Menghitung total price * qty
+            $inventory->each(function ($item) {
+                $item->total = $item->price * $item->qty;
+            });
+
             // Mengembalikan DataTables dengan data inventaris yang sudah diproses
             return DataTables::of($inventory)
-                ->addColumn('action', function ($inventory) {
-                    return $inventory->action ?? '';
+                ->addColumn('total', function ($item) {
+                    return $item->total;
                 })
+                ->rawColumns(['total'])
                 ->make(true);
         }
 

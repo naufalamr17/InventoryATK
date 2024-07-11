@@ -163,6 +163,7 @@
                                             <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('PIC') }}</th>
                                             <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Qty') }}</th>
                                             <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Price') }}</th>
+                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Total') }}</th>
                                             <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Location') }}</th>
                                             <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Category') }}</th>
                                             <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Name') }}</th>
@@ -215,7 +216,7 @@
             var table = $('#inventoryTable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('inventory') }}",
+                ajax: "{{ route('data_in') }}",
                 columns: [{
                         data: 'code',
                         name: 'code'
@@ -243,6 +244,13 @@
                     {
                         data: 'price',
                         name: 'price',
+                        render: function(data, type, row) {
+                            return number_format(data, 0, ',', '.');
+                        }
+                    },
+                    {
+                        data: 'total',
+                        name: 'total',
                         render: function(data, type, row) {
                             return number_format(data, 0, ',', '.');
                         }
@@ -278,8 +286,8 @@
                 }
             });
 
-            var typingTimer;                // Timer identifier
-            var doneTypingInterval = 3000;  // Time in ms (3 seconds)
+            var typingTimer; // Timer identifier
+            var doneTypingInterval = 3000; // Time in ms (3 seconds)
 
             $('#searchbox').on('keyup', function() {
                 clearTimeout(typingTimer);
