@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Imports\YourDataImport;
 use App\Models\inventory;
+use App\Models\InventoryTotal;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
@@ -20,9 +21,9 @@ class InventoryController extends Controller
         if ($request->ajax()) {
             // Query inventaris berdasarkan status pengguna
             if (Auth::user()->status == 'Administrator' || Auth::user()->status == 'Super Admin' || Auth::user()->status == 'Auditor' || Auth::user()->hirar == 'Manager' || Auth::user()->hirar == 'Deputy General Manager') {
-                $inventory = Inventory::orderBy('code', 'asc')->get();
+                $inventory = InventoryTotal::orderBy('code', 'asc')->get();
             } else {
-                $inventory = Inventory::where('location', Auth::user()->location)
+                $inventory = InventoryTotal::where('location', Auth::user()->location)
                     ->orderBy('code', 'asc')->get();
             }
 
@@ -98,7 +99,8 @@ class InventoryController extends Controller
         // Generate code based on category and iteration
         $category = $request->input('category');
         $lastCode = Inventory::where('category', $category)->orderBy('id', 'desc')->first();
-        $code = $category . '-' . str_pad($lastCode ? $lastCode->id + 1 : 1, 3, '0', STR_PAD_LEFT);
+        $nextId = $lastCode ? intval(substr($lastCode->code, -3)) + 1 : 1;
+        $code = $category . '-' . str_pad($nextId, 3, '0', STR_PAD_LEFT);
 
         // Assuming Inventory model is used for storing inventory data
         $inventory = new Inventory();
@@ -114,8 +116,16 @@ class InventoryController extends Controller
         $inventory->unit = $validatedData['unit'];
         $inventory->code = $code; // Assign the generated code
 
+        $inventoryTotal = new InventoryTotal();
+        $inventoryTotal->code = $code;
+        $inventoryTotal->qty = $validatedData['qty'];
+        $inventoryTotal->location = $validatedData['location'];
+        $inventoryTotal->name = $validatedData['name'];
+        $inventoryTotal->unit = $validatedData['unit'];
+
         // Save the inventory
         $inventory->save();
+        $inventoryTotal->save();
 
         return redirect()->route('inventory')->with('success', 'Inventory created successfully.');
     }

@@ -157,15 +157,9 @@
                                     <thead>
                                         <tr>
                                             <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Code') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Period') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Date') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Time') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('PIC') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Qty') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Price') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Location') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Category') }}</th>
                                             <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Name') }}</th>
+                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Qty') }}</th>
+                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Location') }}</th>
                                             <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Unit') }}</th>
                                             @if (Auth::check() && (Auth::user()->status == 'Administrator' || Auth::user()->status == 'Modified' || Auth::user()->status == 'Super Admin'))
                                             <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Action') }}</th>
@@ -224,39 +218,12 @@
                         name: 'code'
                     },
                     {
-                        data: 'period',
-                        name: 'period'
-                    },
-                    {
-                        data: 'date',
-                        name: 'date'
-                    },
-                    {
-                        data: 'time',
-                        name: 'time'
-                    },
-                    {
-                        data: 'pic',
-                        name: 'pic'
-                    },
-                    {
                         data: 'qty',
                         name: 'qty'
                     },
                     {
-                        data: 'price',
-                        name: 'price',
-                        render: function(data, type, row) {
-                            return number_format(data, 0, ',', '.');
-                        }
-                    },
-                    {
                         data: 'location',
                         name: 'location'
-                    },
-                    {
-                        data: 'category',
-                        name: 'category'
                     },
                     {
                         data: 'name',
@@ -276,7 +243,7 @@
                 ],
                 pageLength: 50,
                 order: [
-                    [2, 'desc']
+                    [0, 'desc']
                 ],
                 dom: '<"top">rt<"bottom"ip><"clear">',
                 language: {
