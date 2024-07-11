@@ -218,16 +218,16 @@
                         name: 'code'
                     },
                     {
+                        data: 'name',
+                        name: 'name'
+                    },
+                    {
                         data: 'qty',
                         name: 'qty'
                     },
                     {
                         data: 'location',
                         name: 'location'
-                    },
-                    {
-                        data: 'name',
-                        name: 'name'
                     },
                     {
                         data: 'unit',
