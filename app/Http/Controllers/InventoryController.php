@@ -188,10 +188,14 @@ class InventoryController extends Controller
         if ($request->ajax()) {
             // Query inventaris berdasarkan status pengguna
             if (Auth::user()->status == 'Administrator' || Auth::user()->status == 'Super Admin' || Auth::user()->status == 'Auditor' || Auth::user()->hirar == 'Manager' || Auth::user()->hirar == 'Deputy General Manager') {
-                $inventory = dataout::orderBy('code', 'asc')->get();
+                $inventory = dataout::join('inventory_totals', 'dataouts.code', '=', 'inventory_totals.code')
+                    ->orderBy('dataouts.code', 'asc')
+                    ->get(['dataouts.*', 'inventory_totals.*']); // Menggunakan select() untuk memilih kolom yang tepat
             } else {
-                $inventory = dataout::where('location', Auth::user()->location)
-                    ->orderBy('code', 'asc')->get();
+                $inventory = dataout::join('inventory_totals', 'dataouts.code', '=', 'inventory_totals.code')
+                    ->where('dataouts.location', Auth::user()->location)
+                    ->orderBy('dataouts.code', 'asc')
+                    ->get(['dataouts.*', 'inventory_totals.*']); // Menggunakan select() untuk memilih kolom yang tepat
             }
 
             // Mengembalikan DataTables dengan data inventaris yang sudah diproses
