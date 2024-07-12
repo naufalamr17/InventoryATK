@@ -54,7 +54,6 @@ class DatabaseSeeder extends Seeder
             ['NIK' => 'MLP 002.0313.2021', 'NAMA' => 'Dedy Syarifudin', 'AREA' => 'Head Office', 'DEPT' => 'HRGA-IT Department', 'JABATAN' => 'Driver'],
             ['NIK' => 'MLP 002.0383.2022', 'NAMA' => 'Adi Saputra Antonius Gultom', 'AREA' => 'Head Office', 'DEPT' => 'HRGA-IT Department', 'JABATAN' => 'Driver'],
             ['NIK' => 'MLP 002.0388.2022', 'NAMA' => 'Widianto', 'AREA' => 'Head Office', 'DEPT' => 'HRGA-IT Department', 'JABATAN' => 'Driver'],
-            ['NIK' => 'MLP 002.0447.2023', 'NAMA' => 'Eko Wahono', 'AREA' => 'Head Office', 'DEPT'=> 'HRGA-IT Department', 'JABATAN' => 'Driver'],
             ['NIK' => 'MLP 002.0185.2019', 'NAMA' => 'Agung Rohmansyah', 'AREA' => 'Head Office', 'DEPT' => 'HRGA-IT Department', 'JABATAN' => 'Messenger'],
             ['NIK' => 'MLP 002.0511.2023', 'NAMA' => 'Reggie Indah Fauziah Hendriyati', 'AREA' => 'Head Office', 'DEPT' => 'HRGA-IT Department', 'JABATAN' => 'Staff GA & Recepsionist'],
             ['NIK' => 'MLP 002.0183.2019', 'NAMA' => 'Lutfi Yasinta', 'AREA' => 'Head Office', 'DEPT' => 'HRGA-IT Department', 'JABATAN' => 'Staff HRGA'],

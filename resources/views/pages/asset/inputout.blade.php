@@ -1,5 +1,75 @@
 <x-layout bodyClass="g-sidenav-show  bg-gray-200">
 
+    <script src="https://cdn.jsdelivr.net/npm/quagga/dist/quagga.min.js"></script>
+    <style>
+        #interactive {
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #interactive video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        #result {
+            margin-top: 20px;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Media query for landscape orientation on mobile devices */
+        @media only screen and (max-width: 600px) {
+            .modal-content {
+                width: 90%;
+                max-width: none;
+                height: 40vh;
+                overflow-y: auto;
+            }
+        }
+    </style>
+
     <x-navbars.sidebar activePage="inventory"></x-navbars.sidebar>
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
         <!-- Navbar -->
@@ -36,6 +106,20 @@
                                             @if ($errors->has('nik'))
                                             <div class="text-danger mt-2">{{ $errors->first('nik') }}</div>
                                             @endif
+
+                                            <div class="mb-2 me-2 mt-3">
+                                                <button id="openModalButton" class="btn btn-danger">
+                                                    <i class="fas fa-camera"></i>
+                                                </button>
+                                            </div>
+
+                                            <div id="myModal" class="modal">
+                                                <div class="modal-content">
+                                                    <span class="close">&times;</span>
+                                                    <div id="interactive" class="viewport"></div>
+                                                    <div id="result"></div>
+                                                </div>
+                                            </div>
                                         </div>
 
                                         <div class="form-group">
@@ -146,4 +230,68 @@
         </div>
     </main>
     <x-plugins></x-plugins>
+
+    <script>
+        document.getElementById('openModalButton').addEventListener('click', function() {
+            var modal = document.getElementById('myModal');
+            modal.style.display = "block";
+            startScanner();
+        });
+
+        document.getElementsByClassName('close')[0].addEventListener('click', function() {
+            var modal = document.getElementById('myModal');
+            modal.style.display = "none";
+            Quagga.stop();
+        });
+
+        window.onclick = function(event) {
+            var modal = document.getElementById('myModal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+                Quagga.stop();
+            }
+        };
+
+        function startScanner() {
+            Quagga.init({
+                inputStream: {
+                    name: "Live",
+                    type: "LiveStream",
+                    target: document.querySelector('#interactive'), // Target the div element, not the video directly
+                    constraints: {
+                        facingMode: "environment" // Ensure back camera is used
+                    }
+                },
+                decoder: {
+                    readers: [
+                        "code_128_reader", "ean_reader", "ean_8_reader", "code_39_reader", "code_39_vin_reader",
+                        "codabar_reader", "upc_reader", "upc_e_reader", "i2of5_reader"
+                    ]
+                }
+            }, function(err) {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+                console.log("Initialization finished. Ready to start");
+                Quagga.start();
+            });
+
+            Quagga.onDetected(function(result) {
+                if (result.codeResult) {
+                    var code = result.codeResult.code;
+                    document.getElementById('result').innerText = 'Barcode detected: ' + code;
+
+                    // Set the code in the search box
+                    var searchBox = document.getElementById('nik');
+                    searchBox.value = code;
+
+                    // Close the modal
+                    var modal = document.getElementById('myModal');
+                    modal.style.display = "none";
+                    Quagga.stop();x
+                }
+            });
+        }
+    </script>
 </x-layout>
