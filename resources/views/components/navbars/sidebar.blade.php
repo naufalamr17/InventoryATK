@@ -46,6 +46,14 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link {{ $activePage == 'data_out' ? 'active bg-gradient-danger' : '' }}" href="{{ route('data_out') }}" style="color: {{ $activePage == 'data_out' ? 'white' : 'black' }};">
+                    <div class="text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fas fa-angle-double-left" style="color: {{ $activePage == 'data_out' ? 'white' : 'black' }};"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Data Keluar</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link {{ $activePage == 'employee' ? 'active bg-gradient-danger' : '' }}" href="{{ route('employee') }}" style="color: {{ $activePage == 'employee' ? 'white' : 'black' }};">
                     <div class="text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fas fa-users" style="color: {{ $activePage == 'employee' ? 'white' : 'black' }};"></i>

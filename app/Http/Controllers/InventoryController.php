@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Imports\YourDataImport;
+use App\Models\Dataout;
 use App\Models\inventory;
 use App\Models\InventoryTotal;
 use Carbon\Carbon;
@@ -40,7 +41,7 @@ class InventoryController extends Controller
                             </a>
                         </div>
                         <div class="p-1">
-                            <a href="' . route('in_inventory', ['id' => $inv->id]) . '" class="btn btn-warning btn-sm p-0 mt-3" style="width: 24px; height: 24px;">
+                            <a href="' . route('out_inventory', ['id' => $inv->id]) . '" class="btn btn-warning btn-sm p-0 mt-3" style="width: 24px; height: 24px;">
                                 <i class="material-icons" style="font-size: 16px;">logout</i>
                             </a>
                         </div>
@@ -133,10 +134,72 @@ class InventoryController extends Controller
 
     public function out($id)
     {
-        $inventory = inventory::findOrFail($id);
-        $inventory->delete();
+        $inventory = InventoryTotal::findOrFail($id);
+        $inventory2 = Inventory::findOrFail($id);
 
-        return redirect()->back()->with('success', 'Inventory deleted successfully.');
+        return view('pages.asset.inputout', compact('inventory', 'inventory2'));
+    }
+
+    public function storeout(Request $request, $id)
+    {
+        // dd($request);
+        // Validasi input
+        $validator = Validator::make($request->all(), [
+            'nik' => 'required|string',
+            'period' => 'required|numeric',
+            'date' => 'required|date',
+            'time' => 'required',
+            'pic' => 'required|string',
+            'qty' => 'required|numeric',
+            'location' => 'required|string',
+            'category' => 'required|string',
+            'name' => 'required|string',
+            'unit' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // Ambil data dari InventoryTotal
+        $inventoryTotal = InventoryTotal::findOrFail($id);
+
+        // Simpan data baru ke dalam Inventory
+        $inventory = new Dataout();
+        $inventory->code = $inventoryTotal->code;
+        $inventory->periode = $request->period;
+        $inventory->date = $request->date;
+        $inventory->time = $request->time;
+        $inventory->pic = $request->pic;
+        $inventory->qty = $request->qty;
+        $inventory->nik = $request->nik;
+        $inventory->save();
+
+        // Update saldo
+        $saldo = $inventoryTotal->qty - $request->qty;
+        $inventoryTotal->qty = $saldo;
+        $inventoryTotal->save();
+
+        return redirect()->route('inventory')->with('success', 'Asset updated successfully.');
+    }
+
+    public function dataout(Request $request)
+    {
+        if ($request->ajax()) {
+            // Query inventaris berdasarkan status pengguna
+            if (Auth::user()->status == 'Administrator' || Auth::user()->status == 'Super Admin' || Auth::user()->status == 'Auditor' || Auth::user()->hirar == 'Manager' || Auth::user()->hirar == 'Deputy General Manager') {
+                $inventory = dataout::orderBy('code', 'asc')->get();
+            } else {
+                $inventory = dataout::where('location', Auth::user()->location)
+                    ->orderBy('code', 'asc')->get();
+            }
+
+            // Mengembalikan DataTables dengan data inventaris yang sudah diproses
+            return DataTables::of($inventory)
+                ->make(true);
+        }
+
+        return view('pages.asset.dataout');
     }
 
     public function in($id)
