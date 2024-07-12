@@ -62,14 +62,14 @@
                 </a>
             </li>
             @if (Auth::check() && Auth::user()->status != 'Auditor')
-            <li class="nav-item">
-                <a class="nav-link {{ $activePage == 'report' ? ' active bg-gradient-danger' : '' }}" href="{{ route('report') }}" style="color: {{ $activePage == 'report' ? 'white' : 'black' }};">
+            <!-- <li class="nav-item">
+                <a class="nav-link {{ $activePage == 'report' ? ' active bg-gradient-danger' : '' }}" href="" style="color: {{ $activePage == 'report' ? 'white' : 'black' }};">
                     <div class="text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fas fa-chart-line" style="color: {{ $activePage == 'report' ? 'white' : 'black' }};"></i>
                     </div>
                     <span class="nav-link-text ms-1">Report</span>
                 </a>
-            </li>
+            </li> -->
             @endif
             @if (Auth::check() && Auth::user()->status == 'Administrator' || Auth::user()->status == 'Super Admin')
             <li class="nav-item">
