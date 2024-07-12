@@ -31,18 +31,26 @@
                         <i class="fas fa-plus-circle" style="color: {{ $activePage == 'inventory' ? 'white' : 'black' }};"></i>
                     </div>
                     @if (Auth::check() && (Auth::user()->status != 'Viewers' && Auth::user()->status != 'Auditor'))
-                    <span class="nav-link-text ms-1">Input Asset</span>
+                    <span class="nav-link-text ms-1">Input ATK</span>
                     @else
-                    <span class="nav-link-text ms-1">Asset</span>
+                    <span class="nav-link-text ms-1">ATK</span>
                     @endif
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ $activePage == 'data_in' ? 'active bg-gradient-danger' : '' }}" href="{{ route('data_in') }}" style="color: {{ $activePage == 'repair_inventory' ? 'white' : 'black' }};">
+                <a class="nav-link {{ $activePage == 'data_in' ? 'active bg-gradient-danger' : '' }}" href="{{ route('data_in') }}" style="color: {{ $activePage == 'data_in' ? 'white' : 'black' }};">
                     <div class="text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fas fa-angle-double-right" style="color: {{ $activePage == 'data_in' ? 'white' : 'black' }};"></i>
                     </div>
                     <span class="nav-link-text ms-1">Data Masuk</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ $activePage == 'employee' ? 'active bg-gradient-danger' : '' }}" href="{{ route('employee') }}" style="color: {{ $activePage == 'employee' ? 'white' : 'black' }};">
+                    <div class="text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fas fa-users" style="color: {{ $activePage == 'employee' ? 'white' : 'black' }};"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Employee</span>
                 </a>
             </li>
             @if (Auth::check() && Auth::user()->status != 'Auditor')

@@ -19,6 +19,7 @@ Route::get('/', function () {
 });
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
@@ -61,31 +62,14 @@ Route::get('/data_in', [InventoryController::class, 'repair'])->name('data_in')-
 Route::get('/inventory/{id}/in', [InventoryController::class, 'in'])->name('in_inventory')->middleware('auth');
 Route::put('/inventory/{inventory}/storein', [InventoryController::class, 'storein'])->name('store_in')->middleware('auth');
 
+Route::get('/employee', [EmployeeController::class, 'index'])->name('employee')->middleware('auth');
+Route::get('/add_employee', [EmployeeController::class, 'addemployee'])->name('add_employee')->middleware('auth');
+Route::post('/store_employee', [EmployeeController::class, 'store'])->name('store_employee')->middleware('auth');
+
 Route::get('/inputexcel', [InventoryController::class, 'inputexcel'])->name('inputexcel')->middleware('auth');
 Route::post('/store_excel', [InventoryController::class, 'storeexcel'])->name('store_excel')->middleware('auth');
 
 Route::get('/report', [InventoryController::class, 'report'])->name('report')->middleware('auth');
-
-Route::post('/approval', function (Request $request) {
-	// Access form data using $request object
-	$itemId = $request->input('itemId');
-	$itemId2 = $request->input('itemId2');
-	$hirar = $request->input('hirar');
-	$approvalStatus = $request->input('approval_action');
-	$approval = $approvalStatus . ' by ' . $hirar;
-
-	dispose::where('id', $itemId)->update([
-		'Approval' => $approval
-	]);
-
-	if ($hirar === "Deputy General Manager" && $approvalStatus === "Approve") {
-		inventory::where('asset_code', $itemId2)->update([
-			'status' => 'Dispose'
-		]);
-	}
-
-	return redirect()->route('dispose_inventory')->with('success', 'Approval processed successfully!');
-})->name('approval')->middleware('auth');
 
 // Route::group(['middleware' => 'auth'], function () {
 // 	Route::get('billing', function () {

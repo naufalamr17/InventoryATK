@@ -193,47 +193,6 @@ class InventoryController extends Controller
         return redirect()->route('inventory')->with('success', 'Asset updated successfully.');
     }
 
-    public function history()
-    {
-        if (Auth::user()->status == 'Administrator' || Auth::user()->status == 'Super Admin' || Auth::user()->status == 'Auditor' || Auth::user()->hirar == 'Manager' || Auth::user()->hirar == 'Deputy General Manager') {
-            $userhist = Userhist::join('inventories', 'userhists.inv_id', '=', 'inventories.id')
-                ->select(
-                    'inventories.asset_code as kode_asset',
-                    'inventories.asset_category',
-                    'inventories.asset_position_dept',
-                    'inventories.asset_type',
-                    'inventories.description',
-                    'inventories.serial_number',
-                    'inventories.location',
-                    'inventories.status',
-                    'userhists.hand_over_date as serah_terima',
-                    'userhists.user',
-                    'userhists.dept',
-                    'userhists.note'
-                )
-                ->get();
-        } else {
-            $userhist = Userhist::join('inventories', 'userhists.inv_id', '=', 'inventories.id')
-                ->select(
-                    'inventories.asset_code as kode_asset',
-                    'inventories.asset_category',
-                    'inventories.asset_position_dept',
-                    'inventories.asset_type',
-                    'inventories.description',
-                    'inventories.serial_number',
-                    'inventories.location',
-                    'inventories.status',
-                    'userhists.hand_over_date as serah_terima',
-                    'userhists.user',
-                    'userhists.dept',
-                    'userhists.note'
-                )
-                ->where('inventories.location', Auth::user()->location)
-                ->get();
-        }
-        return view('pages.asset.history', compact('userhist'));
-    }
-
     public function repair(Request $request)
     {
         if ($request->ajax()) {
@@ -262,63 +221,6 @@ class InventoryController extends Controller
         return view('pages.asset.repair');
     }
 
-    public function inputrepair()
-    {
-        return view('pages.asset.inputrepair');
-    }
-
-    public function storerepair(Request $request)
-    {
-        // dd($request);
-        // Validate the request data
-        $request->validate([
-            'tanggal_kerusakan' => 'nullable|date',
-            'tanggal_pengembalian' => 'nullable|date',
-            'remarks' => 'nullable|string',
-        ]);
-
-        // Find the inventory based on the asset code
-        $inventory = inventory::where('asset_code', $request->asset_code)->first();
-
-        // Update the status of the inventory
-        $inventory->status = $request->status;
-        $inventory->save();
-
-        // dd($request->status);
-
-        if ($request->status == "Breakdown") {
-            // Create the RepairStatus record
-            repairstatus::create([
-                'inv_id' => $inventory->id,
-                'status' => $request->status,
-                'tanggal_kerusakan' => $request->tanggal_kerusakan_breakdown,
-                'note' => $request->remarks_breakdown,
-            ]);
-        } else  if ($request->status == "Repair") {
-            // Create the RepairStatus record
-            repairstatus::create([
-                'inv_id' => $inventory->id,
-                'status' => $request->status,
-                'tanggal_kerusakan' => $request->tanggal_kerusakan_repair,
-                'tanggal_pengembalian' => $request->tanggal_pengembalian_repair,
-                'note' => $request->remarks_repair,
-            ]);
-        } else if ($request->status == "Good") {
-            // Check the latest RepairStatus record for the inventory
-            $latestStatus = repairstatus::where('inv_id', $inventory->id)
-                ->orderBy('created_at', 'desc')
-                ->first();
-
-            if ($latestStatus) {
-                // Update the tanggal_pengembalian to today
-                $latestStatus->tanggal_pengembalian = Carbon::now();
-                $latestStatus->save();
-            }
-        }
-
-        return redirect()->route('repair_inventory')->with('success', 'Repair status updated successfully.');
-    }
-
     public function getInventoryData(Request $request)
     {
         $assetCode = $request->input('asset_code');
@@ -344,82 +246,6 @@ class InventoryController extends Controller
         } else {
             return response()->json(['error' => 'Inventaris tidak ditemukan.'], 404);
         }
-    }
-
-    public function dispose()
-    {
-        if (Auth::user()->status == 'Administrator' || Auth::user()->status == 'Super Admin' || Auth::user()->status == 'Auditor' || Auth::user()->hirar == 'Manager' || Auth::user()->hirar == 'Deputy General Manager') {
-            $inventory = inventory::join('disposes', 'inventories.id', '=', 'disposes.inv_id')
-                ->select(
-                    'inventories.asset_code',
-                    'inventories.asset_type',
-                    'inventories.serial_number',
-                    'inventories.useful_life',
-                    'inventories.acquisition_date',
-                    'inventories.location',
-                    'inventories.status',
-                    'disposes.id',
-                    'disposes.tanggal_penghapusan',
-                    'disposes.note',
-                    'disposes.approval',
-                    'disposes.disposal_document',
-                )->get();
-        } else {
-            $inventory = inventory::join('disposes', 'inventories.id', '=', 'disposes.inv_id')
-                ->select(
-                    'inventories.asset_code',
-                    'inventories.asset_type',
-                    'inventories.serial_number',
-                    'inventories.useful_life',
-                    'inventories.acquisition_date',
-                    'inventories.location',
-                    'inventories.status',
-                    'disposes.id',
-                    'disposes.tanggal_penghapusan',
-                    'disposes.note',
-                    'disposes.approval',
-                    'disposes.disposal_document',
-                )
-                ->where('inventories.location', Auth::user()->location)
-                ->get();
-        }
-
-
-        // dd($inventory);
-
-        return view('pages.asset.dispose', compact('inventory'));
-    }
-
-    public function inputdispose()
-    {
-        return view('pages.asset.inputdispose');
-    }
-
-    public function storedispose(Request $request)
-    {
-        // dd($request);
-
-        $assetCode = $request->input('asset_code');
-        $inventory = Inventory::where('asset_code', $assetCode)->first();
-
-        // Update the status of the inventory
-        // Handle file upload
-        if ($request->hasFile('disposal_document')) {
-            $fileName = time() . '_' . $request->file('disposal_document')->getClientOriginalName();
-            $filePath = $request->file('disposal_document')->storeAs('uploads', $fileName, 'public');
-        }
-        $inventory->status = 'Waiting Dispose';
-        $inventory->disposal_date = $request->disposal_date;
-        $inventory->save();
-
-        dispose::create([
-            'inv_id' => $inventory->id,
-            'tanggal_penghapusan' => $request->disposal_date,
-            'note' => $request->remarks_repair,
-            'disposal_document' => $filePath
-        ]);
-
-        return redirect()->route('dispose_inventory')->with('success', 'Successfully.');
     }
 
     public function report()
