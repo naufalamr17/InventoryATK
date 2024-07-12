@@ -20,21 +20,25 @@ class EmployeeController extends Controller
                     if (Auth::user()->status == 'Administrator' || Auth::user()->status == 'Super Admin' || Auth::user()->status == 'Auditor') {
                         $inv->action = '<div class="d-flex align-items-center justify-content-center">
                         <div class="p-1">
-                            <a href="' . route('in_inventory', ['id' => $inv->id]) . '" class="btn btn-success btn-sm p-0 mt-3" style="width: 24px; height: 24px;">
-                                <i class="material-icons" style="font-size: 16px;">input</i>
+                            <a href="' . route('employee.edit', ['id' => $inv->id]) . '" class="btn btn-success btn-sm p-0 mt-3" style="width: 24px; height: 24px;">
+                                <i class="material-icons" style="font-size: 16px;">edit</i>
                             </a>
                         </div>
                         <div class="p-1">
-                            <a href="' . route('in_inventory', ['id' => $inv->id]) . '" class="btn btn-warning btn-sm p-0 mt-3" style="width: 24px; height: 24px;">
-                                <i class="material-icons" style="font-size: 16px;">logout</i>
-                            </a>
+                            <form action="' . route('employee.destroy', ['id' => $inv->id]) . '" method="POST" onsubmit="return confirm(\'Are you sure?\');">
+                                ' . csrf_field() . '
+                                ' . method_field('DELETE') . '
+                                <button type="submit" class="btn btn-danger btn-sm p-0 mt-3" style="width: 24px; height: 24px;">
+                                    <i class="material-icons" style="font-size: 16px;">delete</i>
+                                </button>
+                            </form>
                         </div>
                     </div>';
                     } elseif (Auth::user()->status == 'Modified') {
                         $inv->action = '<div class="d-flex align-items-center justify-content-center">
                         <div class="p-1">
-                            <a href="' . route('edit_inventory', ['id' => $inv->id]) . '" class="btn btn-success btn-sm p-0 mt-3" style="width: 24px; height: 24px;">
-                                <i class="material-icons" style="font-size: 16px;">input</i>
+                            <a href="' . route('employee.edit', ['id' => $inv->id]) . '" class="btn btn-success btn-sm p-0 mt-3" style="width: 24px; height: 24px;">
+                                <i class="material-icons" style="font-size: 16px;">edit</i>
                             </a>
                         </div>
                     </div>';
@@ -78,5 +82,37 @@ class EmployeeController extends Controller
 
         return redirect()->route('employee')
             ->with('success', 'Employee created successfully.');
+    }
+
+    public function edit($id)
+    {
+        $employee = Employee::findOrFail($id);
+        return view('pages.employees.edit', compact('employee'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'nik' => 'required',
+            'nama' => 'required',
+            'area' => 'required',
+            'dept' => 'required',
+            'jabatan' => 'required',
+        ]);
+
+        $employee = Employee::findOrFail($id);
+        $employee->update($request->all());
+
+        return redirect()->route('employee')
+            ->with('success', 'Employee updated successfully.');
+    }
+
+    public function destroy($id)
+    {
+        $employee = Employee::findOrFail($id);
+        $employee->delete();
+
+        return redirect()->route('employee')
+            ->with('success', 'Employee deleted successfully.');
     }
 }

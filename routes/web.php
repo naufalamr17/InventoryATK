@@ -65,6 +65,11 @@ Route::put('/inventory/{inventory}/storein', [InventoryController::class, 'store
 Route::get('/employee', [EmployeeController::class, 'index'])->name('employee')->middleware('auth');
 Route::get('/add_employee', [EmployeeController::class, 'addemployee'])->name('add_employee')->middleware('auth');
 Route::post('/store_employee', [EmployeeController::class, 'store'])->name('store_employee')->middleware('auth');
+Route::middleware('auth')->group(function () {
+    Route::get('/employee/edit/{id}', [EmployeeController::class, 'edit'])->name('employee.edit');
+    Route::put('/employee/update/{id}', [EmployeeController::class, 'update'])->name('employee.update');
+    Route::delete('/employee/delete/{id}', [EmployeeController::class, 'destroy'])->name('employee.destroy');
+});
 
 Route::get('/inputexcel', [InventoryController::class, 'inputexcel'])->name('inputexcel')->middleware('auth');
 Route::post('/store_excel', [InventoryController::class, 'storeexcel'])->name('store_excel')->middleware('auth');

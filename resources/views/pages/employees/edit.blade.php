@@ -25,13 +25,14 @@
                         </div>
                         @endif
                         <div class="p-6">
-                            <form method="POST" action="{{ route('store_employee') }}">
+                            <form method="POST" action="{{ route('employee.update', $employee->id) }}">
                                 @csrf
+                                @method('PUT')
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="nik">NIK</label>
-                                            <input id="nik" class="form-control border p-2" type="text" name="nik" value="{{ old('nik') }}" required>
+                                            <input id="nik" class="form-control border p-2" type="text" name="nik" value="{{ $employee->nik }}" required>
                                             @if ($errors->has('nik'))
                                             <div class="text-danger mt-2">{{ $errors->first('nik') }}</div>
                                             @endif
@@ -39,7 +40,7 @@
 
                                         <div class="form-group">
                                             <label for="nama">Nama</label>
-                                            <input id="nama" class="form-control border p-2" type="text" name="nama" value="{{ old('nama') }}" required>
+                                            <input id="nama" class="form-control border p-2" type="text" name="nama" value="{{ $employee->nama }}" required>
                                             @if ($errors->has('nama'))
                                             <div class="text-danger mt-2">{{ $errors->first('nama') }}</div>
                                             @endif
@@ -49,9 +50,9 @@
                                             <label for="area">Area</label>
                                             <select id="area" class="form-control border p-2" name="area" required readonly>
                                                 <option value="" selected disabled>Select Area</option>
-                                                <option value="Head Office" {{ $userLocation == 'Head Office' ? 'selected' : 'disabled' }}>Head Office</option>
-                                                <option value="Office Kendari" {{ $userLocation == 'Office Kendari' ? 'selected' : 'disabled' }}>Office Kendari</option>
-                                                <option value="Site Molore" {{ $userLocation == 'Site Molore' ? 'selected' : 'disabled' }}>Site Molore</option>
+                                                <option value="Head Office" {{ $employee->area == 'Head Office' ? 'selected' : 'disabled' }}>Head Office</option>
+                                                <option value="Office Kendari" {{ $employee->area == 'Office Kendari' ? 'selected' : 'disabled' }}>Office Kendari</option>
+                                                <option value="Site Molore" {{ $employee->area == 'Site Molore' ? 'selected' : 'disabled' }}>Site Molore</option>
                                             </select>
                                             @if ($errors->has('area'))
                                             <div class="text-danger mt-2">{{ $errors->first('area') }}</div>
@@ -62,7 +63,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="dept">Dept</label>
-                                            <input id="dept" class="form-control border p-2" type="text" name="dept" value="{{ old('dept') }}" required>
+                                            <input id="dept" class="form-control border p-2" type="text" name="dept" value="{{ $employee->dept }}" required>
                                             @if ($errors->has('dept'))
                                             <div class="text-danger mt-2">{{ $errors->first('dept') }}</div>
                                             @endif
@@ -70,7 +71,7 @@
 
                                         <div class="form-group">
                                             <label for="jabatan">Jabatan</label>
-                                            <input id="jabatan" class="form-control border p-2" type="text" name="jabatan" value="{{ old('jabatan') }}" required>
+                                            <input id="jabatan" class="form-control border p-2" type="text" name="jabatan" value="{{ $employee->jabatan }}" required>
                                             @if ($errors->has('jabatan'))
                                             <div class="text-danger mt-2">{{ $errors->first('jabatan') }}</div>
                                             @endif
@@ -79,11 +80,10 @@
                                 </div>
 
                                 <div class="form-group mt-4">
-                                    <button type="submit" class="btn btn-success btn-block">Add Employee</button>
+                                    <button type="submit" class="btn btn-success btn-block">Update Employee</button>
                                     <a href="{{ route('inventory') }}" class="btn btn-danger">Cancel</a>
                                 </div>
                             </form>
-
                         </div>
                     </div>
                 </div>
