@@ -108,7 +108,7 @@
                                             @endif
 
                                             <div class="mb-2 me-2 mt-3">
-                                                <button id="openModalButton" class="btn btn-danger">
+                                                <button type="button" id="openModalButton" class="btn btn-danger">
                                                     <i class="fas fa-camera"></i>
                                                 </button>
                                             </div>
