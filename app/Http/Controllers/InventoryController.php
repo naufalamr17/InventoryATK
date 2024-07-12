@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Imports\YourDataImport;
 use App\Models\Dataout;
+use App\Models\employee;
 use App\Models\inventory;
 use App\Models\InventoryTotal;
 use Carbon\Carbon;
@@ -157,8 +158,14 @@ class InventoryController extends Controller
             'unit' => 'required|string',
         ]);
 
+        // Ambil data employee berdasarkan nik yang dikirimkan
+        $employee = Employee::where('nik', $request->nik)->first();
+
+        // Periksa jika validasi gagal
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
+        } elseif (!$employee) {
+            return redirect()->back()->withErrors("Data employee tidak terdaftar");
         }
 
         // Ambil data dari InventoryTotal
