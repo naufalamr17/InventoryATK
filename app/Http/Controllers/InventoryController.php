@@ -189,14 +189,30 @@ class InventoryController extends Controller
             // Query inventaris berdasarkan status pengguna
             if (Auth::user()->status == 'Administrator' || Auth::user()->status == 'Super Admin' || Auth::user()->status == 'Auditor' || Auth::user()->hirar == 'Manager' || Auth::user()->hirar == 'Deputy General Manager') {
                 $inventory = dataout::join('inventory_totals', 'dataouts.code', '=', 'inventory_totals.code')
+                    ->join('employees', 'dataouts.nik', '=', 'employees.nik')
                     ->orderBy('dataouts.code', 'asc')
-                    ->get(['dataouts.*', 'inventory_totals.*']); // Menggunakan select() untuk memilih kolom yang tepat
+                    ->get(['dataouts.*', 'inventory_totals.*', 'employees.*']); // Menggunakan select() untuk memilih kolom yang tepat
             } else {
                 $inventory = dataout::join('inventory_totals', 'dataouts.code', '=', 'inventory_totals.code')
+                    ->join('employees', 'dataouts.nik', '=', 'employees.nik')
                     ->where('dataouts.location', Auth::user()->location)
                     ->orderBy('dataouts.code', 'asc')
-                    ->get(['dataouts.*', 'inventory_totals.*']); // Menggunakan select() untuk memilih kolom yang tepat
+                    ->get(['dataouts.*', 'inventory_totals.*', 'employees.*']); // Menggunakan select() untuk memilih kolom yang tepat
             }
+
+            // Mengubah nilai $inventory->nik menjadi string yang berisi informasi dari employees
+            $inventory->transform(function ($item) {
+                $nik = $item->nik;
+                $nama = $item->nama;
+                $area = $item->area;
+                $dept = $item->dept;
+                $jabatan = $item->jabatan;
+
+                // Format string sesuai kebutuhan, misalnya:
+                $item->nik = "$nik|$nama|$area|$dept|$jabatan";
+
+                return $item;
+            });
 
             // Mengembalikan DataTables dengan data inventaris yang sudah diproses
             return DataTables::of($inventory)
