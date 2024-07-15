@@ -126,7 +126,7 @@ class InventoryController extends Controller
     public function out($id)
     {
         $inventory = InventoryTotal::findOrFail($id);
-        $inventory2 = Inventory::findOrFail($id);
+        $inventory2 = Inventory::where('code', $inventory->code)->firstOrFail();
 
         return view('pages.asset.inputout', compact('inventory', 'inventory2'));
     }
@@ -222,7 +222,7 @@ class InventoryController extends Controller
     public function in($id)
     {
         $inventory = InventoryTotal::findOrFail($id);
-        $in = Inventory::findOrFail($id);
+        $in = Inventory::where('code', $inventory->code)->firstOrFail();
 
         return view('pages.asset.editasset', compact('inventory', 'in'));
     }
