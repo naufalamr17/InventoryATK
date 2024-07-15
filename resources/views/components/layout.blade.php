@@ -38,6 +38,14 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <!-- CSS Files -->
     <link id="pagestyle" href="{{ asset('assets') }}/css/material-dashboard.css?v=3.0.0" rel="stylesheet" />
+
+    <style>
+    @keyframes breathe {
+        0% { transform: scale(0.9); }
+        50% { transform: scale(1.3); }
+        100% { transform: scale(0.9); }
+    }
+</style>
 </head>
 <body class="{{ $bodyClass }}">
 

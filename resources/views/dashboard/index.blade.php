@@ -78,8 +78,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body d-flex justify-start align-items-center">
                             <h6 class="mb-0">Barang Tersisa Sedikit</h6>
+                            @if($inventoryTableData->isNotEmpty())
+                            <span class="badge bg-danger ms-2" style="animation: breathe 2s infinite;">
+                                !
+                            </span>
+                            @endif
                         </div>
                     </div>
                 </div>
