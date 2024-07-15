@@ -9,7 +9,7 @@
             <span class="ms-4 font-weight-bold" style="color: black;">INVENTORY ATK</span>
             @else
             <span class="ms-4 font-weight-bold" style="color: black;">
-                Inventory ATK {{ strtoupper(Auth::user()->location) }}
+                INVENTORY ATK {{ strtoupper(Auth::user()->location) }}
             </span>
             @endif
         </a>
