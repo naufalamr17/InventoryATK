@@ -64,7 +64,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach($inventoryTableData as $item)
+                                            @forelse($inventoryTableData as $item)
                                             <tr>
                                                 <td class="text-center text-secondary text-xs opacity-7">{{ $item->code }}</td>
                                                 <td class="text-center text-secondary text-xs opacity-7">{{ $item->name }}</td>
@@ -72,7 +72,11 @@
                                                 <td class="text-center text-secondary text-xs opacity-7">{{ $item->location }}</td>
                                                 <td class="text-center text-secondary text-xs opacity-7">{{ $item->unit }}</td>
                                             </tr>
-                                            @endforeach
+                                            @empty
+                                            <tr>
+                                                <td colspan="5" class="text-center text-secondary text-xs opacity-7">Persediaan Barang Aman</td>
+                                            </tr>
+                                            @endforelse
                                         </tbody>
                                     </table>
                                 </div>
