@@ -192,6 +192,7 @@ class InventoryController extends Controller
             } else {
                 $inventory = dataout::join('inventory_totals', 'dataouts.code', '=', 'inventory_totals.code')
                     ->join('employees', 'dataouts.nik', '=', 'employees.nik')
+                    ->where('location', Auth::user()->location)
                     ->orderBy('dataouts.code', 'asc')
                     ->get(['dataouts.*', 'inventory_totals.*', 'employees.*']); // Menggunakan select() untuk memilih kolom yang tepat
             }
