@@ -34,8 +34,7 @@ class InventoryController extends Controller
             $inventory = $inventory->map(function ($inv) {
                 // Menetapkan variabel action berdasarkan status pengguna
                 if (Auth::check()) {
-                    if (Auth::user()->status == 'Administrator' || Auth::user()->status == 'Super Admin' || Auth::user()->status == 'Auditor') {
-                        $inv->action = '<div class="d-flex align-items-center justify-content-center">
+                    $inv->action = '<div class="d-flex align-items-center justify-content-center">
                         <div class="p-1">
                             <a href="' . route('in_inventory', ['id' => $inv->id]) . '" class="btn btn-success btn-sm p-0 mt-3" style="width: 24px; height: 24px;">
                                 <i class="material-icons" style="font-size: 16px;">input</i>
@@ -47,15 +46,6 @@ class InventoryController extends Controller
                             </a>
                         </div>
                     </div>';
-                    } elseif (Auth::user()->status == 'Modified') {
-                        $inv->action = '<div class="d-flex align-items-center justify-content-center">
-                        <div class="p-1">
-                            <a href="' . route('edit_inventory', ['id' => $inv->id]) . '" class="btn btn-success btn-sm p-0 mt-3" style="width: 24px; height: 24px;">
-                                <i class="material-icons" style="font-size: 16px;">input</i>
-                            </a>
-                        </div>
-                    </div>';
-                    }
                 }
 
                 return $inv;
@@ -202,7 +192,6 @@ class InventoryController extends Controller
             } else {
                 $inventory = dataout::join('inventory_totals', 'dataouts.code', '=', 'inventory_totals.code')
                     ->join('employees', 'dataouts.nik', '=', 'employees.nik')
-                    ->where('dataouts.location', Auth::user()->location)
                     ->orderBy('dataouts.code', 'asc')
                     ->get(['dataouts.*', 'inventory_totals.*', 'employees.*']); // Menggunakan select() untuk memilih kolom yang tepat
             }
