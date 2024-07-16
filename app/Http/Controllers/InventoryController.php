@@ -30,7 +30,6 @@ class InventoryController extends Controller
                     ->orderBy('code', 'asc')->get();
             }
 
-            // Menghitung nilai terdepresiasi dan pesan sisa umur
             $inventory = $inventory->map(function ($inv) {
                 // Menetapkan variabel action berdasarkan status pengguna
                 if (Auth::check()) {
@@ -289,16 +288,64 @@ class InventoryController extends Controller
                 $item->total = $item->price * $item->qty;
             });
 
+            $inventory = $inventory->map(function ($inv) {
+                // Menetapkan variabel action berdasarkan status pengguna
+                if (Auth::check()) {
+                    $inv->action = '<div class="d-flex align-items-center justify-content-center">
+                        <div class="p-1">
+                            <a href="' . route('destroy_in', ['id' => $inv->id]) . '" class="btn btn-danger btn-sm p-0 mt-3" style="width: 24px; height: 24px;" onclick="return confirm(\'Are you sure you want to delete this item?\')">
+                                <i class="material-icons" style="font-size: 16px;">delete</i>
+                            </a>
+                        </div>
+                    </div>';
+                }
+
+                return $inv;
+            });
+
             // Mengembalikan DataTables dengan data inventaris yang sudah diproses
             return DataTables::of($inventory)
                 ->addColumn('total', function ($item) {
                     return $item->total;
                 })
                 ->rawColumns(['total'])
+                ->addColumn('action', function ($inventory) {
+                    return $inventory->action ?? '';
+                })
+                ->rawColumns(['action'])
                 ->make(true);
         }
 
         return view('pages.asset.repair');
+    }
+
+    public function destroy_in($id)
+    {
+        try {
+            // Cari inventory berdasarkan ID
+            $inventory = Inventory::findOrFail($id);
+            $code = $inventory->code;
+
+            // Cari inventory total berdasarkan kode
+            $inventoryTotal = InventoryTotal::where('code', $code)->firstOrFail();
+
+            // Kurangi jumlah qty
+            $qty = $inventoryTotal->qty - $inventory->qty;
+
+            // Tampilkan hasil pengurangan qty
+            // dd($qty);
+
+            // Hapus inventory
+            $inventory->delete();
+
+            // Update qty inventory total
+            $inventoryTotal->qty = $qty;
+            $inventoryTotal->save();
+
+            return redirect()->back()->with('success', 'Inventory item deleted and quantity updated successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error deleting inventory item or updating quantity.');
+        }
     }
 
     public function getInventoryData(Request $request)

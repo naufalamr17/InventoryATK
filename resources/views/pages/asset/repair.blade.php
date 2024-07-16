@@ -168,6 +168,7 @@
                                             <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Category') }}</th>
                                             <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Name') }}</th>
                                             <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Unit') }}</th>
+                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Action') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody class="text-center">
@@ -270,6 +271,10 @@
                     {
                         data: 'unit',
                         name: 'unit'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action'
                     }
                 ],
                 pageLength: 50,
