@@ -184,16 +184,44 @@ class InventoryController extends Controller
         if ($request->ajax()) {
             // Query inventaris berdasarkan status pengguna
             if (Auth::user()->status == 'Administrator' || Auth::user()->status == 'Super Admin' || Auth::user()->status == 'Auditor' || Auth::user()->hirar == 'Manager' || Auth::user()->hirar == 'Deputy General Manager') {
-                $inventory = dataout::join('inventory_totals', 'dataouts.code', '=', 'inventory_totals.code')
+                $inventory = DB::table('dataouts')
+                    ->select(
+                        'dataouts.*',
+                        'inventory_totals.code',
+                        'inventory_totals.qty',
+                        'inventory_totals.location',
+                        'inventory_totals.name',
+                        'inventory_totals.unit',
+                        'employees.nik',
+                        'employees.nama',
+                        'employees.area',
+                        'employees.dept',
+                        'employees.jabatan'
+                    )
+                    ->join('inventory_totals', 'dataouts.code', '=', 'inventory_totals.code')
                     ->join('employees', 'dataouts.nik', '=', 'employees.nik')
                     ->orderBy('dataouts.code', 'asc')
-                    ->get(['dataouts.*', 'inventory_totals.*', 'employees.*']); // Menggunakan select() untuk memilih kolom yang tepat
+                    ->get();
             } else {
-                $inventory = dataout::join('inventory_totals', 'dataouts.code', '=', 'inventory_totals.code')
+                $inventory = DB::table('dataouts')
+                    ->select(
+                        'dataouts.*',
+                        'inventory_totals.code',
+                        'inventory_totals.qty',
+                        'inventory_totals.location',
+                        'inventory_totals.name',
+                        'inventory_totals.unit',
+                        'employees.nik',
+                        'employees.nama',
+                        'employees.area',
+                        'employees.dept',
+                        'employees.jabatan'
+                    )
+                    ->join('inventory_totals', 'dataouts.code', '=', 'inventory_totals.code')
                     ->join('employees', 'dataouts.nik', '=', 'employees.nik')
                     ->where('location', Auth::user()->location)
                     ->orderBy('dataouts.code', 'asc')
-                    ->get(['dataouts.*', 'inventory_totals.*', 'employees.*']); // Menggunakan select() untuk memilih kolom yang tepat
+                    ->get();
             }
 
             // Mengubah nilai $inventory->nik menjadi string yang berisi informasi dari employees
@@ -210,12 +238,60 @@ class InventoryController extends Controller
                 return $item;
             });
 
+            $inventory = $inventory->map(function ($inv) {
+                // Menetapkan variabel action berdasarkan status pengguna
+                if (Auth::check()) {
+                    $inv->action = '<div class="d-flex align-items-center justify-content-center">
+                        <div class="p-1">
+                            <a href="' . route('destroy_out', ['id' => $inv->id]) . '" class="btn btn-danger btn-sm p-0 mt-3" style="width: 24px; height: 24px;" onclick="return confirm(\'Are you sure you want to delete this item?\')">
+                                <i class="material-icons" style="font-size: 16px;">delete</i>
+                            </a>
+                        </div>
+                    </div>';
+                }
+
+                return $inv;
+            });
+
             // Mengembalikan DataTables dengan data inventaris yang sudah diproses
             return DataTables::of($inventory)
+                ->addColumn('action', function ($inventory) {
+                    return $inventory->action ?? '';
+                })
+                ->rawColumns(['action'])
                 ->make(true);
         }
 
         return view('pages.asset.dataout');
+    }
+
+    public function destroy_out($id)
+    {
+        try {
+            // Cari inventory berdasarkan ID
+            $inventory = Dataout::findOrFail($id);
+            $code = $inventory->code;
+
+            // Cari inventory total berdasarkan kode
+            $inventoryTotal = InventoryTotal::where('code', $code)->firstOrFail();
+
+            // Ubah jumlah qty
+            $qty = $inventoryTotal->qty + $inventory->qty;
+
+            // Tampilkan hasil pengurangan qty
+            // dd($inventory);
+
+            // Hapus inventory
+            $inventory->delete();
+
+            // Update qty inventory total
+            $inventoryTotal->qty = $qty;
+            $inventoryTotal->save();
+
+            return redirect()->back()->with('success', 'Inventory item deleted and quantity updated successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error deleting inventory item or updating quantity.');
+        }
     }
 
     public function in($id)

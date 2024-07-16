@@ -61,11 +61,12 @@ Route::post('/store_inventory', [InventoryController::class, 'store'])->name('st
 Route::get('/data_in', [InventoryController::class, 'repair'])->name('data_in')->middleware('auth');
 Route::get('/inventory/{id}/in', [InventoryController::class, 'in'])->name('in_inventory')->middleware('auth');
 Route::put('/inventory/{inventory}/storein', [InventoryController::class, 'storein'])->name('store_in')->middleware('auth');
-Route::get('/inventory/destroy/{id}', [InventoryController::class, 'destroy_in'])->name('destroy_in')->middleware('auth');
+Route::get('/inventory/destroy_in/{id}', [InventoryController::class, 'destroy_in'])->name('destroy_in')->middleware('auth');
 
 Route::get('/data_out', [InventoryController::class, 'dataout'])->name('data_out')->middleware('auth');
 Route::get('/inventory/{id}/out', [InventoryController::class, 'out'])->name('out_inventory')->middleware('auth');
 Route::put('/inventory/{inventory}/storeout', [InventoryController::class, 'storeout'])->name('store_out')->middleware('auth');
+Route::get('/inventory/destroy_out/{id}', [InventoryController::class, 'destroy_out'])->name('destroy_out')->middleware('auth');
 
 Route::get('/employee', [EmployeeController::class, 'index'])->name('employee')->middleware('auth');
 Route::get('/add_employee', [EmployeeController::class, 'addemployee'])->name('add_employee')->middleware('auth');

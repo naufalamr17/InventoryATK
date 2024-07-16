@@ -166,6 +166,7 @@
                                             <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Name') }}</th>
                                             <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Unit') }}</th>
                                             <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Location') }}</th>
+                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Action') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody class="text-center">
@@ -232,6 +233,10 @@
                         data: 'location',
                         name: 'location'
                     },
+                    {
+                        data: 'action',
+                        name: 'action'
+                    }
                 ],
                 pageLength: 50,
                 order: [
