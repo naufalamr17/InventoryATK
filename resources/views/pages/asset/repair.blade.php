@@ -168,7 +168,9 @@
                                             <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Category') }}</th>
                                             <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Name') }}</th>
                                             <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Unit') }}</th>
+                                            @if (Auth::check() && (Auth::user()->status == 'Administrator' || Auth::user()->status == 'Super Admin'))
                                             <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Action') }}</th>
+                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody class="text-center">
@@ -272,10 +274,13 @@
                         data: 'unit',
                         name: 'unit'
                     },
-                    {
+                    @if(Auth::check() && (Auth::user() -> status == 'Administrator' || Auth::user() -> status == 'Super Admin')) {
                         data: 'action',
-                        name: 'action'
-                    }
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    },
+                    @endif
                 ],
                 pageLength: 50,
                 order: [
