@@ -77,7 +77,6 @@ class InventoryController extends Controller
     {
         $validatedData = $request->validate([
             'location' => 'required|string',
-            'period' => 'required|string',
             'date' => 'required|date',
             'time' => 'required|string',
             'pic' => 'required|string',
@@ -97,7 +96,7 @@ class InventoryController extends Controller
         // Assuming Inventory model is used for storing inventory data
         $inventory = new Inventory();
         $inventory->location = $validatedData['location'];
-        $inventory->period = $validatedData['period'];
+        $inventory->period = Carbon::parse($validatedData['date'])->month;
         $inventory->date = $validatedData['date'];
         $inventory->time = $validatedData['time'];
         $inventory->pic = $validatedData['pic'];
@@ -136,7 +135,6 @@ class InventoryController extends Controller
         // Validasi input
         $validator = Validator::make($request->all(), [
             'nik' => 'required|string',
-            'period' => 'required|numeric',
             'date' => 'required|date',
             'time' => 'required',
             'pic' => 'required|string',
@@ -163,7 +161,7 @@ class InventoryController extends Controller
         // Simpan data baru ke dalam Inventory
         $inventory = new Dataout();
         $inventory->code = $inventoryTotal->code;
-        $inventory->periode = $request->period;
+        $inventory->periode = Carbon::parse($request->date)->month;
         $inventory->date = $request->date;
         $inventory->time = $request->time;
         $inventory->pic = $request->pic;
@@ -187,12 +185,9 @@ class InventoryController extends Controller
                 $inventory = DB::table('dataouts')
                     ->select(
                         'dataouts.*',
-                        'inventory_totals.code',
-                        'inventory_totals.qty',
                         'inventory_totals.location',
                         'inventory_totals.name',
                         'inventory_totals.unit',
-                        'employees.nik',
                         'employees.nama',
                         'employees.area',
                         'employees.dept',
@@ -206,12 +201,9 @@ class InventoryController extends Controller
                 $inventory = DB::table('dataouts')
                     ->select(
                         'dataouts.*',
-                        'inventory_totals.code',
-                        'inventory_totals.qty',
                         'inventory_totals.location',
                         'inventory_totals.name',
                         'inventory_totals.unit',
-                        'employees.nik',
                         'employees.nama',
                         'employees.area',
                         'employees.dept',
@@ -306,7 +298,6 @@ class InventoryController extends Controller
     {
         // Validasi input
         $validator = Validator::make($request->all(), [
-            'period' => 'required|numeric',
             'date' => 'required|date',
             'time' => 'required',
             'pic' => 'required|string',
@@ -328,7 +319,7 @@ class InventoryController extends Controller
         // Simpan data baru ke dalam Inventory
         $inventory = new Inventory();
         $inventory->code = $inventoryTotal->code;
-        $inventory->period = $request->period;
+        $inventory->period = Carbon::parse($request->date)->month;
         $inventory->date = $request->date;
         $inventory->time = $request->time;
         $inventory->pic = $request->pic;
