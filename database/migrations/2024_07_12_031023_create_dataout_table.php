@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('periode');
             $table->date('date');
-            $table->time('time');
+            $table->string('time');
             $table->string('nik');
             $table->string('code');
             $table->integer('qty');

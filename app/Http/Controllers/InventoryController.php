@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\DataKeluarImport;
 use App\Imports\YourDataImport;
 use App\Models\Dataout;
 use App\Models\employee;
@@ -183,36 +184,26 @@ class InventoryController extends Controller
             // Query inventaris berdasarkan status pengguna
             if (Auth::user()->status == 'Administrator' || Auth::user()->status == 'Super Admin' || Auth::user()->status == 'Auditor' || Auth::user()->hirar == 'Manager' || Auth::user()->hirar == 'Deputy General Manager') {
                 $inventory = DB::table('dataouts')
-                    ->select(
-                        'dataouts.*',
-                        'inventory_totals.location',
-                        'inventory_totals.name',
-                        'inventory_totals.unit',
-                        'employees.nama',
-                        'employees.area',
-                        'employees.dept',
-                        'employees.jabatan'
-                    )
+                    ->selectRaw('dataouts.*, inventory_totals.location, inventory_totals.name, inventory_totals.unit, 
+                IFNULL(employees.nama, "NaN") as nama, 
+                IFNULL(employees.area, "NaN") as area, 
+                IFNULL(employees.dept, "NaN") as dept, 
+                IFNULL(employees.jabatan, "NaN") as jabatan')
                     ->join('inventory_totals', 'dataouts.code', '=', 'inventory_totals.code')
-                    ->join('employees', 'dataouts.nik', '=', 'employees.nik')
-                    ->orderBy('dataouts.code', 'asc')
+                    ->leftJoin('employees', 'dataouts.nik', '=', 'employees.nik')
+                    ->orderBy('dataouts.date', 'desc')
                     ->get();
             } else {
                 $inventory = DB::table('dataouts')
-                    ->select(
-                        'dataouts.*',
-                        'inventory_totals.location',
-                        'inventory_totals.name',
-                        'inventory_totals.unit',
-                        'employees.nama',
-                        'employees.area',
-                        'employees.dept',
-                        'employees.jabatan'
-                    )
+                    ->selectRaw('dataouts.*, inventory_totals.location, inventory_totals.name, inventory_totals.unit, 
+                IFNULL(employees.nama, "NaN") as nama, 
+                IFNULL(employees.area, "NaN") as area, 
+                IFNULL(employees.dept, "NaN") as dept, 
+                IFNULL(employees.jabatan, "NaN") as jabatan')
                     ->join('inventory_totals', 'dataouts.code', '=', 'inventory_totals.code')
-                    ->join('employees', 'dataouts.nik', '=', 'employees.nik')
+                    ->leftJoin('employees', 'dataouts.nik', '=', 'employees.nik')
                     ->where('location', Auth::user()->location)
-                    ->orderBy('dataouts.code', 'asc')
+                    ->orderBy('dataouts.date', 'desc')
                     ->get();
             }
 
@@ -344,10 +335,14 @@ class InventoryController extends Controller
         if ($request->ajax()) {
             // Query inventaris berdasarkan status pengguna
             if (Auth::user()->status == 'Administrator' || Auth::user()->status == 'Super Admin' || Auth::user()->status == 'Auditor' || Auth::user()->hirar == 'Manager' || Auth::user()->hirar == 'Deputy General Manager') {
-                $inventory = Inventory::orderBy('code', 'asc')->get();
+                $inventory = Inventory::join('vendors', 'inventories.vendor_id', '=', 'vendors.id')
+                    ->select('inventories.*', 'vendors.nama as vendor_name')
+                    ->get();
             } else {
-                $inventory = Inventory::where('location', Auth::user()->location)
-                    ->orderBy('code', 'asc')->get();
+                $inventory = Inventory::join('vendors', 'inventories.vendor_id', '=', 'vendors.id')
+                    ->select('inventories.*', 'vendors.nama as vendor_name')
+                    ->where('location', Auth::user()->location)
+                    ->get();
             }
 
             // Menghitung total price * qty
@@ -517,6 +512,21 @@ class InventoryController extends Controller
 
         try {
             Excel::import(new YourDataImport, $request->file('file'));
+
+            return redirect()->back()->with('success', 'Data Imported Successfully');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Failed to import data: ' . $e->getMessage()]);
+        }
+    }
+
+    public function storeexceldataout(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv',
+        ]);
+
+        try {
+            Excel::import(new DataKeluarImport, $request->file('file'));
 
             return redirect()->back()->with('success', 'Data Imported Successfully');
         } catch (\Exception $e) {

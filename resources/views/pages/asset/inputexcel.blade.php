@@ -27,7 +27,10 @@
                         <div class="d-flex align-items-center mb-4 p-3">
                             <div class="ms-auto my-3">
                                 <a class="btn bg-gradient-dark mb-0" href="{{ asset('Template.xlsx') }}" download>
-                                    <i class="material-icons text-sm">file_download</i>&nbsp;&nbsp;Download Template
+                                    <i class="material-icons text-sm">file_download</i>&nbsp;&nbsp;Template Data Masuk
+                                </a>
+                                <a class="btn bg-gradient-dark mb-0" href="{{ asset('TemplateDataKeluar.xlsx') }}" download>
+                                    <i class="material-icons text-sm">file_download</i>&nbsp;&nbsp;Template Data Keluar
                                 </a>
                             </div>
                         </div>
@@ -36,7 +39,17 @@
                             <form action="{{ route('store_excel') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="m-3">
-                                    <label for="file" class="form-label">Choose Excel File</label>
+                                    <label for="file" class="form-label">Import Data Masuk</label>
+                                    <input class="form-control border p-2 mb-2" type="file" id="file" name="file" required>
+                                    <button type="submit" class="btn bg-gradient-primary">Import Data</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="form-group">
+                            <form action="{{ route('store_excel_data_out') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <div class="m-3">
+                                    <label for="file" class="form-label">Import Data Keluar</label>
                                     <input class="form-control border p-2 mb-2" type="file" id="file" name="file" required>
                                     <button type="submit" class="btn bg-gradient-primary">Import Data</button>
                                 </div>

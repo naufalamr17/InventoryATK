@@ -87,5 +87,6 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/inputexcel', [InventoryController::class, 'inputexcel'])->name('inputexcel')->middleware('auth');
 Route::post('/store_excel', [InventoryController::class, 'storeexcel'])->name('store_excel')->middleware('auth');
+Route::post('/store_excel_data_out', [InventoryController::class, 'storeexceldataout'])->name('store_excel_data_out')->middleware('auth');
 
 // Route::get('/report', [InventoryController::class, 'report'])->name('report')->middleware('auth');
