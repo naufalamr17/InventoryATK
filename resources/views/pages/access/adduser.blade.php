@@ -93,9 +93,9 @@
                                                 <div class="d-flex align-items-center">
                                                     <select name="access[]" class="form-control border p-2" style="margin-right: 10px;" readonly>
                                                         <!-- <option value="" disabled selected>Select Access</option> -->
-                                                        <option value="Asset Management" selected>Asset Management</option>
+                                                        <!-- <option value="Asset Management">Asset Management</option> -->
                                                         <!-- <option value="IT Asset Management">IT Asset Management</option> -->
-                                                        <!-- <option value="ATK Management">ATK Management</option> -->
+                                                        <option value="ATK Management" selected>ATK Management</option>
                                                     </select>
                                                     <!-- <button type="button" class="btn btn-danger remove-access mt-3">X</button> -->
                                                 </div>

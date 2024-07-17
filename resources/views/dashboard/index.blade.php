@@ -23,7 +23,7 @@
                 <div class="col-lg-4 col-md-6 mt-4 mb-4">
                     <div class="card z-index-2">
                         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
-                            <div class="bg-white shadow-dark border-radius-lg py-3 ps-2 pe-2">
+                            <div class="bg-success shadow-dark border-radius-lg py-3 ps-2 pe-2">
                                 <div class="chart">
                                     <canvas id="monthlyInventoryChart" class="chart-canvas" height="170"></canvas>
                                 </div>
@@ -37,7 +37,7 @@
                 <div class="col-lg-4 col-md-6 mt-4 mb-4">
                     <div class="card z-index-2">
                         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
-                            <div class="bg-white shadow-dark border-radius-lg py-3 ps-2 pe-2">
+                            <div class="bg-danger shadow-dark border-radius-lg py-3 ps-2 pe-2">
                                 <div class="chart">
                                     <canvas id="monthlyDataoutChart" class="chart-canvas" height="170"></canvas>
                                 </div>
@@ -162,8 +162,8 @@
                     label: 'Data Masuk',
                     data: monthlyInventoryCounts,
                     fill: false,
-                    backgroundColor: '#4CAF50',
-                    borderColor: '#4CAF50',
+                    backgroundColor: '#FFFFFF', // Warna putih untuk latar belakang titik data
+                    borderColor: '#FFFFFF', // Warna putih untuk garis
                     tension: 0.1
                 }]
             };
@@ -173,7 +173,32 @@
                 data: monthlyInventoryDataConfig,
                 options: {
                     responsive: true,
-                    maintainAspectRatio: false
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#FFFFFF' // Warna putih untuk label legenda
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: '#FFFFFF' // Warna putih untuk label sumbu X
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.2)' // Warna putih dengan transparansi untuk garis grid
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                color: '#FFFFFF' // Warna putih untuk label sumbu Y
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.2)' // Warna putih dengan transparansi untuk garis grid
+                            }
+                        }
+                    }
                 }
             };
 
@@ -192,8 +217,8 @@
                     label: 'Data Keluar',
                     data: monthlyDataoutCounts,
                     fill: false,
-                    backgroundColor: '#F44336',
-                    borderColor: '#F44336',
+                    backgroundColor: '#FFFFFF', // Warna putih untuk latar belakang titik data
+                    borderColor: '#FFFFFF', // Warna putih untuk garis
                     tension: 0.1
                 }]
             };
@@ -203,7 +228,32 @@
                 data: monthlyDataoutDataConfig,
                 options: {
                     responsive: true,
-                    maintainAspectRatio: false
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#FFFFFF' // Warna putih untuk label legenda
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: '#FFFFFF' // Warna putih untuk label sumbu X
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.2)' // Warna putih dengan transparansi untuk garis grid
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                color: '#FFFFFF' // Warna putih untuk label sumbu Y
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.2)' // Warna putih dengan transparansi untuk garis grid
+                            }
+                        }
+                    }
                 }
             };
 

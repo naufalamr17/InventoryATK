@@ -18,7 +18,7 @@
     <div class="collapse navbar-collapse w-auto max-height-vh-100" id="sidenav-collapse-main">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link {{ $activePage == 'dashboard' ? 'active bg-gradient-danger' : '' }}" href="{{ route('dashboard') }}" style="color: {{ $activePage == 'dashboard' ? 'white' : 'black' }};">
+                <a class="nav-link {{ $activePage == 'dashboard' ? 'active bg-gradient-success' : '' }}" href="{{ route('dashboard') }}" style="color: {{ $activePage == 'dashboard' ? 'white' : 'black' }};">
                     <div class="text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="material-icons opacity-10" style="color: {{ $activePage == 'dashboard' ? 'white' : 'black' }};">dashboard</i>
                     </div>
@@ -26,19 +26,19 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ $activePage == 'inventory' ? 'active bg-gradient-danger' : '' }}" href="{{ route('inventory') }}" style="color: {{ $activePage == 'inventory' ? 'white' : 'black' }};">
+                <a class="nav-link {{ $activePage == 'inventory' ? 'active bg-gradient-success' : '' }}" href="{{ route('inventory') }}" style="color: {{ $activePage == 'inventory' ? 'white' : 'black' }};">
                     <div class="text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fas fa-plus-circle" style="color: {{ $activePage == 'inventory' ? 'white' : 'black' }};"></i>
                     </div>
                     @if (Auth::check() && (Auth::user()->status != 'Viewers' && Auth::user()->status != 'Auditor'))
-                    <span class="nav-link-text ms-1">Input ATK</span>
+                    <span class="nav-link-text ms-1">Database ATK</span>
                     @else
-                    <span class="nav-link-text ms-1">ATK</span>
+                    <span class="nav-link-text ms-1">Database ATK</span>
                     @endif
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ $activePage == 'data_in' ? 'active bg-gradient-danger' : '' }}" href="{{ route('data_in') }}" style="color: {{ $activePage == 'data_in' ? 'white' : 'black' }};">
+                <a class="nav-link {{ $activePage == 'data_in' ? 'active bg-gradient-success' : '' }}" href="{{ route('data_in') }}" style="color: {{ $activePage == 'data_in' ? 'white' : 'black' }};">
                     <div class="text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fas fa-angle-double-right" style="color: {{ $activePage == 'data_in' ? 'white' : 'black' }};"></i>
                     </div>
@@ -46,7 +46,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ $activePage == 'data_out' ? 'active bg-gradient-danger' : '' }}" href="{{ route('data_out') }}" style="color: {{ $activePage == 'data_out' ? 'white' : 'black' }};">
+                <a class="nav-link {{ $activePage == 'data_out' ? 'active bg-gradient-success' : '' }}" href="{{ route('data_out') }}" style="color: {{ $activePage == 'data_out' ? 'white' : 'black' }};">
                     <div class="text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fas fa-angle-double-left" style="color: {{ $activePage == 'data_out' ? 'white' : 'black' }};"></i>
                     </div>
@@ -54,7 +54,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ $activePage == 'employee' ? 'active bg-gradient-danger' : '' }}" href="{{ route('employee') }}" style="color: {{ $activePage == 'employee' ? 'white' : 'black' }};">
+                <a class="nav-link {{ $activePage == 'employee' ? 'active bg-gradient-success' : '' }}" href="{{ route('employee') }}" style="color: {{ $activePage == 'employee' ? 'white' : 'black' }};">
                     <div class="text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fas fa-users" style="color: {{ $activePage == 'employee' ? 'white' : 'black' }};"></i>
                     </div>
@@ -63,7 +63,7 @@
             </li>
             @if (Auth::check() && Auth::user()->status != 'Auditor')
             <!-- <li class="nav-item">
-                <a class="nav-link {{ $activePage == 'report' ? ' active bg-gradient-danger' : '' }}" href="" style="color: {{ $activePage == 'report' ? 'white' : 'black' }};">
+                <a class="nav-link {{ $activePage == 'report' ? ' active bg-gradient-success' : '' }}" href="" style="color: {{ $activePage == 'report' ? 'white' : 'black' }};">
                     <div class="text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fas fa-chart-line" style="color: {{ $activePage == 'report' ? 'white' : 'black' }};"></i>
                     </div>
@@ -73,7 +73,7 @@
             @endif
             @if (Auth::check() && Auth::user()->status == 'Administrator' || Auth::user()->status == 'Super Admin')
             <li class="nav-item">
-                <a class="nav-link {{ $activePage == 'user-management' ? 'active bg-gradient-danger' : '' }}" href="{{ route('user-management') }}" style="color: {{ $activePage == 'user-management' ? 'white' : 'black' }};">
+                <a class="nav-link {{ $activePage == 'user-management' ? 'active bg-gradient-success' : '' }}" href="{{ route('user-management') }}" style="color: {{ $activePage == 'user-management' ? 'white' : 'black' }};">
                     <div class="text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fas fa-user-circle" style="color: {{ $activePage == 'user-management' ? 'white' : 'black' }};"></i>
                     </div>
@@ -86,7 +86,7 @@
     @if (Auth::check() && Auth::user()->status == 'Administrator' || Auth::user()->status == 'Super Admin')
     <div class="sidenav-footer position-absolute w-100 bottom-0 ">
         <div class="mx-3">
-            <a class="btn bg-gradient-danger w-100" href="{{ route('inputexcel') }}" type="button">Import Data</a>
+            <a class="btn bg-gradient-success w-100" href="{{ route('inputexcel') }}" type="button">Import Data</a>
         </div>
     </div>
     @endif
