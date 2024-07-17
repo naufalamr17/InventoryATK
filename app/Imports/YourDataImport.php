@@ -17,12 +17,12 @@ class YourDataImport implements ToModel, WithHeadingRow
     public function model(array $row)
     {
         // Generate unique code based on category and iteration
-        $lastInventory = Inventory::where('category', strtoupper($row['category']))
-            ->orderBy('id', 'desc')
-            ->first();
+        // $lastInventory = Inventory::where('category', strtoupper($row['category']))
+        //     ->orderBy('id', 'desc')
+        //     ->first();
 
-        $nextId = $lastInventory ? intval(substr($lastInventory->code, -3)) + 1 : 1;
-        $code = strtoupper($row['category']) . '-' . str_pad($nextId, 3, '0', STR_PAD_LEFT);
+        // $nextId = $lastInventory ? intval(substr($lastInventory->code, -3)) + 1 : 1;
+        // $code = strtoupper($row['category']) . '-' . str_pad($nextId, 3, '0', STR_PAD_LEFT);
 
         // Assuming Inventory model is used for storing inventory data
         $inventory = new Inventory();
@@ -36,17 +36,27 @@ class YourDataImport implements ToModel, WithHeadingRow
         $inventory->category = strtoupper($row['category']);
         $inventory->name = $row['name']; // Adjust to match your column name in the CSV or input data
         $inventory->unit = $row['unit']; // Adjust to match your column name in the CSV or input data
-        $inventory->code = $code; // Assign the generated code
-
-        $inventoryTotal = new InventoryTotal();
-        $inventoryTotal->code = $code;
-        $inventoryTotal->qty = $row['qty']; // Adjust to match your column name in the CSV or input data
-        $inventoryTotal->location = ucwords(strtolower($row['location']));
-        $inventoryTotal->name = $row['name']; // Adjust to match your column name in the CSV or input data
-        $inventoryTotal->unit = $row['unit']; // Adjust to match your column name in the CSV or input data
+        $inventory->vendor_id = $row['vendor']; // Adjust to match your column name in the CSV or input data
+        $inventory->code = $row['kode'];
 
         // Save the inventory
         $inventory->save();
-        $inventoryTotal->save();
+
+        $lastInventory = InventoryTotal::where('code', $inventory->code)->first();
+
+        if ($lastInventory) {
+            // Update the existing InventoryTotal
+            $lastInventory->qty += $row['qty'];
+            $lastInventory->save();
+        } else {
+            // Create a new InventoryTotal if none exists
+            $inventoryTotal = new InventoryTotal();
+            $inventoryTotal->code = $row['kode'];
+            $inventoryTotal->qty = $row['qty'];
+            $inventoryTotal->location = ucwords(strtolower($row['location']));
+            $inventoryTotal->name = $row['name'];
+            $inventoryTotal->unit = $row['unit'];
+            $inventoryTotal->save();
+        }
     }
 }
