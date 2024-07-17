@@ -281,7 +281,17 @@
                     // Handle error here
                     console.warn(`QR Code no longer in front of camera: ${errorMessage}`);
                 }
-            ).catch(err => {
+            ).then(() => {
+                // Apply video constraints after starting the scanner
+                setTimeout(() => {
+                    html5QrCode.applyVideoConstraints({
+                        focusMode: "continuous",
+                        advanced: [{
+                            zoom: 2.0
+                        }]
+                    }).catch(err => console.error(err));
+                }, 2000);
+            }).catch(err => {
                 // Start failed, handle it here
                 console.error(`Unable to start scanning, error: ${err}`);
             });
