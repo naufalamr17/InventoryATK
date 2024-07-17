@@ -1,5 +1,4 @@
-<x-layout bodyClass="g-sidenav-show  bg-gray-200">
-
+<x-layout bodyClass="g-sidenav-show bg-gray-200">
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
     <style>
         #interactive {
@@ -22,7 +21,6 @@
             margin-top: 20px;
         }
 
-        /* Modal styles */
         .modal {
             display: none;
             position: fixed;
@@ -59,7 +57,6 @@
             cursor: pointer;
         }
 
-        /* Media query for landscape orientation on mobile devices */
         @media only screen and (max-width: 600px) {
             .modal-content {
                 width: 90%;
@@ -72,9 +69,7 @@
 
     <x-navbars.sidebar activePage="data_out"></x-navbars.sidebar>
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
-        <!-- Navbar -->
         <x-navbars.navs.auth titlePage="Data Keluar"></x-navbars.navs.auth>
-        <!-- End Navbar -->
         <div class="container-fluid py-4">
             <div class="row">
                 <div class="col-12">
@@ -126,50 +121,42 @@
                                     </div>
                                 </div>
 
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <div class="form-group" style="display: none;">
-                                            <label for="period">Period</label>
-                                            <input id="period" class="form-control border p-2" type="number" name="period">
-                                            @if ($errors->has('period'))
-                                            <div class="text-danger mt-2">{{ $errors->first('period') }}</div>
-                                            @endif
+                                <div id="dynamic-form">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="code">Code</label>
+                                                <input class="form-control border p-2" type="text" name="code[]" required>
+                                            </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="code">Code</label>
-                                            <input id="code" class="form-control border p-2" type="text" name="code" required>
-                                            @if ($errors->has('code'))
-                                            <div class="text-danger mt-2">{{ $errors->first('code') }}</div>
-                                            @endif
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="date">Date</label>
+                                                <input class="form-control border p-2" type="date" name="date[]" required>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label for="date">Date</label>
-                                            <input id="date" class="form-control border p-2" type="date" name="date" required>
-                                            @if ($errors->has('date'))
-                                            <div class="text-danger mt-2">{{ $errors->first('date') }}</div>
-                                            @endif
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="time">Time</label>
+                                                <input class="form-control border p-2" type="time" name="time[]" required>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label for="time">Time</label>
-                                            <input id="time" class="form-control border p-2" type="time" name="time" required>
-                                            @if ($errors->has('time'))
-                                            <div class="text-danger mt-2">{{ $errors->first('time') }}</div>
-                                            @endif
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="qty">Qty</label>
+                                                <input class="form-control border p-2" type="number" name="qty[]" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <div class="form-group">
+                                                <button type="button" class="btn btn-danger mt-4" onclick="removeFormRow(this)">X</button>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label for="qty">Qty</label>
-                                            <input id="qty" class="form-control border p-2" type="number" name="qty" required>
-                                            @if ($errors->has('qty'))
-                                            <div class="text-danger mt-2">{{ $errors->first('qty') }}</div>
-                                            @endif
-                                        </div>
-                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-primary" onclick="addFormRow()">Tambah Baris</button>
                                 </div>
 
                                 <div class="form-group mt-4">
@@ -185,6 +172,48 @@
         </div>
     </main>
     <x-plugins></x-plugins>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function addFormRow() {
+            var row = `<div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="code">Code</label>
+                                <input class="form-control border p-2" type="text" name="code[]" required>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="date">Date</label>
+                                <input class="form-control border p-2" type="date" name="date[]" required>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="time">Time</label>
+                                <input class="form-control border p-2" type="time" name="time[]" required>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="qty">Qty</label>
+                                <input class="form-control border p-2" type="number" name="qty[]" required>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-danger mt-4" onclick="removeFormRow(this)">X</button>
+                            </div>
+                        </div>
+                    </div>`;
+            $('#dynamic-form').append(row);
+        }
+
+        function removeFormRow(button) {
+            $(button).closest('.row').remove();
+        }
+    </script>
 
     <script>
         document.getElementById('openModalButton').addEventListener('click', function() {
@@ -213,31 +242,25 @@
             html5QrCode.start({
                     facingMode: "environment"
                 }, {
-                    fps: 10, // Set the framerate to 10 frames per second
+                    fps: 10,
                     qrbox: {
                         width: 250,
                         height: 250
-                    } // Set the dimensions of the QR code scanning box
+                    }
                 },
                 (decodedText, decodedResult) => {
-                    // Handle the result here
                     document.getElementById('result').innerText = 'QR Code detected: ' + decodedText;
-
-                    // Set the code in the search box
                     var searchBox = document.getElementById('nik');
                     searchBox.value = decodedText;
 
-                    // Close the modal
                     var modal = document.getElementById('myModal');
                     modal.style.display = "none";
                     html5QrCode.stop().catch(err => console.error(err));
                 },
                 (errorMessage) => {
-                    // Handle error here
                     console.warn(`QR Code no longer in front of camera: ${errorMessage}`);
                 }
             ).then(() => {
-                // Apply video constraints after starting the scanner
                 setTimeout(() => {
                     html5QrCode.applyVideoConstraints({
                         focusMode: "continuous",
@@ -247,7 +270,6 @@
                     }).catch(err => console.error(err));
                 }, 2000);
             }).catch(err => {
-                // Start failed, handle it here
                 console.error(`Unable to start scanning, error: ${err}`);
             });
         }
