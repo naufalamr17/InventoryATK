@@ -24,7 +24,10 @@ return new class extends Migration
             $table->string('category'); 
             $table->string('name'); 
             $table->string('unit'); 
+            $table->unsignedBigInteger('vendor_id');
             $table->timestamps();
+
+            $table->foreign('vendor_id')->references('id')->on('vendors')->onDelete('cascade');
         });
     }
 

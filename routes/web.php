@@ -24,6 +24,7 @@ use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
+use App\Http\Controllers\VendorController;
 use App\Models\dispose;
 use App\Models\inventory;
 use Illuminate\Http\Request;
@@ -67,6 +68,13 @@ Route::get('/data_out', [InventoryController::class, 'dataout'])->name('data_out
 Route::get('/inventory/{id}/out', [InventoryController::class, 'out'])->name('out_inventory')->middleware('auth');
 Route::put('/inventory/{inventory}/storeout', [InventoryController::class, 'storeout'])->name('store_out')->middleware('auth');
 Route::get('/inventory/destroy_out/{id}', [InventoryController::class, 'destroy_out'])->name('destroy_out')->middleware('auth');
+
+Route::get('/vendor', [VendorController::class, 'index'])->name('vendor');
+Route::get('/vendor/destroy/{id}', [VendorController::class, 'destroy'])->name('destroy_vendor')->middleware('auth');
+Route::get('/vendor/create', [VendorController::class, 'create'])->name('vendor_create')->middleware('auth');
+Route::post('/vendor/store', [VendorController::class, 'store'])->name('store_vendor')->middleware('auth');
+Route::get('/vendor/edit/{id}', [VendorController::class, 'edit'])->name('edit_vendor')->middleware('auth');
+Route::put('/vendor/update/{id}', [VendorController::class, 'update'])->name('update_vendor')->middleware('auth');
 
 Route::get('/employee', [EmployeeController::class, 'index'])->name('employee')->middleware('auth');
 Route::get('/add_employee', [EmployeeController::class, 'addemployee'])->name('add_employee')->middleware('auth');

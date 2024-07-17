@@ -22,4 +22,9 @@ class inventory extends Model
         'name',
         'unit',
     ];
+
+    public function vendor()
+    {
+        return $this->belongsTo(Vendor::class);
+    }
 }
