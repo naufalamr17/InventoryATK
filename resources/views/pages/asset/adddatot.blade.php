@@ -123,31 +123,31 @@
 
                                 <div id="dynamic-form">
                                     <div class="row">
-                                        <div class="col-md-2">
+                                        <div class="col">
                                             <div class="form-group">
                                                 <label for="code">Code</label>
                                                 <input class="form-control border p-2" type="text" name="code[]" required>
                                             </div>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col">
                                             <div class="form-group">
                                                 <label for="date">Date</label>
                                                 <input class="form-control border p-2" type="date" name="date[]" required>
                                             </div>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col">
                                             <div class="form-group">
                                                 <label for="time">Time</label>
                                                 <input class="form-control border p-2" type="time" name="time[]" required>
                                             </div>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col">
                                             <div class="form-group">
                                                 <label for="qty">Qty</label>
                                                 <input class="form-control border p-2" type="number" name="qty[]" required>
                                             </div>
                                         </div>
-                                        <div class="col-md-1">
+                                        <div class="col-md-1 col-12 mt-2">
                                             <div class="form-group">
                                                 <button type="button" class="btn btn-danger mt-4" onclick="removeFormRow(this)">X</button>
                                             </div>
@@ -177,31 +177,31 @@
     <script>
         function addFormRow() {
             var row = `<div class="row">
-                        <div class="col-md-2">
+                        <div class="col">
                             <div class="form-group">
                                 <label for="code">Code</label>
                                 <input class="form-control border p-2" type="text" name="code[]" required>
                             </div>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col">
                             <div class="form-group">
                                 <label for="date">Date</label>
                                 <input class="form-control border p-2" type="date" name="date[]" required>
                             </div>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col">
                             <div class="form-group">
                                 <label for="time">Time</label>
                                 <input class="form-control border p-2" type="time" name="time[]" required>
                             </div>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col">
                             <div class="form-group">
                                 <label for="qty">Qty</label>
                                 <input class="form-control border p-2" type="number" name="qty[]" required>
                             </div>
                         </div>
-                        <div class="col-md-1">
+                        <div class="col-md-1 col-12 mt-2">
                             <div class="form-group">
                                 <button type="button" class="btn btn-danger mt-4" onclick="removeFormRow(this)">X</button>
                             </div>
