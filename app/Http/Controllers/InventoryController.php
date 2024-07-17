@@ -277,6 +277,16 @@ class InventoryController extends Controller
         }
     }
 
+    public function adddataout()
+    {
+        $user = Auth::user();
+        $userLocation = $user->location;
+
+        // dd($userLocation);
+
+        return view('pages.asset.adddatot', compact('userLocation'));
+    }
+
     public function in($id)
     {
         $inventory = InventoryTotal::findOrFail($id);

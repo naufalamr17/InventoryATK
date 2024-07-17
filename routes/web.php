@@ -68,6 +68,7 @@ Route::get('/data_out', [InventoryController::class, 'dataout'])->name('data_out
 Route::get('/inventory/{id}/out', [InventoryController::class, 'out'])->name('out_inventory')->middleware('auth');
 Route::put('/inventory/{inventory}/storeout', [InventoryController::class, 'storeout'])->name('store_out')->middleware('auth');
 Route::get('/inventory/destroy_out/{id}', [InventoryController::class, 'destroy_out'])->name('destroy_out')->middleware('auth');
+Route::get('/add_dataout', [InventoryController::class, 'adddataout'])->name('add_dataout')->middleware('auth');
 
 Route::get('/vendor', [VendorController::class, 'index'])->name('vendor');
 Route::get('/vendor/destroy/{id}', [VendorController::class, 'destroy'])->name('destroy_vendor')->middleware('auth');

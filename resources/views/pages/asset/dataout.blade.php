@@ -134,11 +134,11 @@
                                 </button>
                             </div>
                             @if (Auth::check() && (Auth::user()->status != 'Viewers' && Auth::user()->status != 'Auditor'))
-                            <!-- <div class="ms-auto mb-2">
-                                <a class="btn bg-gradient-dark mb-0" href="{{ route('add_inventory') }}">
-                                    <i class="material-icons text-sm">add</i>&nbsp;&nbsp;Add Inventory
+                            <div class="ms-auto mb-2">
+                                <a class="btn bg-gradient-dark mb-0" href="{{ route('add_dataout') }}">
+                                    <i class="material-icons text-sm">add</i>&nbsp;&nbsp;Data Out
                                 </a>
-                            </div> -->
+                            </div>
                             @endif
 
                             <!-- The Modal -->
