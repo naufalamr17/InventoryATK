@@ -287,6 +287,45 @@ class InventoryController extends Controller
         return view('pages.asset.adddatot', compact('userLocation'));
     }
 
+    public function storedatot(Request $request)
+    {
+        $validatedData = $request->validate([
+            'pic' => 'required|string|max:255',
+            'nik' => 'required|string|max:255',
+            'code.*' => 'required|string|max:255',
+            'date.*' => 'required|date',
+            'time.*' => 'required|date_format:H:i',
+            'qty.*' => 'required|integer|min:1',
+        ]);
+
+        // dd($validatedData); // Uncomment this line if you want to debug the validated data
+
+        // Loop through the data and store each entry
+        for ($i = 0; $i < count($validatedData['code']); $i++) {
+            // Create a new DataOut entry
+            DataOut::create([
+                'pic' => $validatedData['pic'],
+                'periode' => Carbon::parse($validatedData['date'][$i])->month,
+                'nik' => $validatedData['nik'],
+                'code' => $validatedData['code'][$i],
+                'date' => $validatedData['date'][$i],
+                'time' => $validatedData['time'][$i],
+                'qty' => $validatedData['qty'][$i],
+            ]);
+
+            // Update InventoryTotal
+            $inventoryTotal = InventoryTotal::where('code', $validatedData['code'][$i])->first();
+            if ($inventoryTotal) {
+                $inventoryTotal->qty -= $validatedData['qty'][$i];
+                $inventoryTotal->save();
+            } else {
+                return redirect()->back()->withErrors(['code' => 'InventoryTotal entry not found for code ' . $validatedData['code'][$i]]);
+            }
+        }
+
+        return redirect()->route('data_out')->with('success', 'Data has been stored successfully.');
+    }
+
     public function in($id)
     {
         $inventory = InventoryTotal::findOrFail($id);

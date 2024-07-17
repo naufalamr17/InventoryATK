@@ -90,9 +90,8 @@
                         </div>
                         @endif
                         <div class="p-6">
-                            <form method="POST" action="">
+                            <form method="POST" action="{{ route('dataout.store') }}">
                                 @csrf
-                                @method('PUT')
 
                                 <div class="form-group">
                                     <label for="pic">PIC</label>
