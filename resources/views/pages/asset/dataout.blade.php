@@ -133,6 +133,14 @@
                                     <i class="fas fa-camera"></i>
                                 </button>
                             </div>
+                            <div class="mb-2 me-2">
+                                <select class="form-control border p-2" name="deptFilter" id="deptFilter">
+                                    <option value="">Filter by Dept</option>
+                                    @foreach ($departments as $dept)
+                                    <option value="{{ $dept }}">{{ $dept }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                             @if (Auth::check() && (Auth::user()->status != 'Viewers' && Auth::user()->status != 'Auditor'))
                             <div class="ms-auto mb-2">
                                 <a class="btn bg-gradient-dark mb-0" href="{{ route('add_dataout') }}">
@@ -282,6 +290,15 @@
                     $(searchbox).select();
                 }, doneTypingInterval);
                 table.search(this.value).draw();
+            });
+
+            $('#deptFilter').on('change', function() {
+                var status = $(this).val().trim();
+                if (status !== '') {
+                    table.columns(5).search(status).draw();
+                } else {
+                    table.columns(5).search('').draw();
+                }
             });
         });
     </script>

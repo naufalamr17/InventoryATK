@@ -249,7 +249,9 @@ class InventoryController extends Controller
                 ->make(true);
         }
 
-        return view('pages.asset.dataout');
+        $departments = Employee::pluck('dept')->unique();
+
+        return view('pages.asset.dataout', compact('departments'));
     }
 
     public function destroy_out($id)
