@@ -143,6 +143,11 @@
                             </div>
                             @if (Auth::check() && (Auth::user()->status != 'Viewers' && Auth::user()->status != 'Auditor'))
                             <div class="ms-auto mb-2">
+                                <button id="exportExcelButton" class="btn bg-gradient-dark mb-0">
+                                    <i class="material-icons text-sm">file_download</i>
+                                </button>
+                            </div>
+                            <div class="ms-2 mb-2">
                                 <a class="btn bg-gradient-dark mb-0" href="{{ route('add_dataout') }}">
                                     <i class="material-icons text-sm">add</i>&nbsp;&nbsp;Data Out
                                 </a>
@@ -199,6 +204,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Include DataTables JS -->
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
     <!-- Initialize DataTable -->
     <script>
         $(document).ready(function() {
@@ -258,7 +265,7 @@
                         data: 'location',
                         name: 'location'
                     },
-                    @if(Auth::check() && (Auth::user() -> status == 'Administrator' || Auth::user() -> status == 'Super Admin')) {
+                    @if(Auth::check() && (Auth::user() - > status == 'Administrator' || Auth::user() - > status == 'Super Admin')) {
                         data: 'action',
                         name: 'action',
                         orderable: false,
@@ -299,6 +306,48 @@
                 } else {
                     table.columns(5).search('').draw();
                 }
+            });
+
+            // Export to Excel functionality
+            $('#exportExcelButton').on('click', function() {
+                const sheetName = 'Report';
+                const fileName = 'report_inventory';
+
+                const table = document.getElementById('inventoryTable');
+
+                // Memastikan tabel ditemukan sebelum melanjutkan
+                if (!table) {
+                    console.error('Tabel tidak ditemukan.');
+                    return;
+                }
+
+                const wb = XLSX.utils.book_new();
+                const ws = XLSX.utils.table_to_sheet(table);
+
+                const range = XLSX.utils.decode_range(ws['!ref']);
+
+                // Autofit width untuk setiap kolom
+                const colWidths = [];
+                for (let C = range.s.c; C <= range.e.c; ++C) {
+                    let maxWidth = 0;
+                    for (let R = range.s.r; R <= range.e.r; ++R) {
+                        const cellAddress = XLSX.utils.encode_cell({
+                            r: R,
+                            c: C
+                        });
+                        if (!ws[cellAddress]) continue;
+                        const cellTextLength = XLSX.utils.format_cell(ws[cellAddress]).length;
+                        maxWidth = Math.max(maxWidth, cellTextLength);
+                    }
+                    colWidths[C] = {
+                        wch: maxWidth + 2
+                    };
+                }
+                ws['!cols'] = colWidths;
+
+                XLSX.utils.book_append_sheet(wb, ws, sheetName);
+
+                XLSX.writeFile(wb, fileName + '.xlsx');
             });
         });
     </script>
