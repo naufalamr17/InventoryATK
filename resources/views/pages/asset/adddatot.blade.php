@@ -174,7 +174,7 @@
 
                                 <div class="form-group mt-4">
                                     <button type="submit" class="btn btn-success btn-block">Update Data</button>
-                                    <a href="{{ route('inventory') }}" class="btn btn-danger">Cancel</a>
+                                    <a href="{{ route('data_out') }}" class="btn btn-danger">Cancel</a>
                                 </div>
                             </form>
                         </div>
