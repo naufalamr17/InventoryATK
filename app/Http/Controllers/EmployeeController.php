@@ -62,10 +62,10 @@ class EmployeeController extends Controller
     {
         $user = Auth::user();
         $userLocation = $user->location;
-
+        $departments = Employee::select('dept')->distinct()->orderBy('dept', 'asc')->pluck('dept');
         // dd($userLocation);
 
-        return view('pages.employees.inputemp', compact('userLocation'));
+        return view('pages.employees.inputemp', compact('userLocation', 'departments'));
     }
 
     public function store(Request $request)
@@ -87,7 +87,8 @@ class EmployeeController extends Controller
     public function edit($id)
     {
         $employee = Employee::findOrFail($id);
-        return view('pages.employees.edit', compact('employee'));
+        $departments = Employee::select('dept')->distinct()->orderBy('dept', 'asc')->pluck('dept');
+        return view('pages.employees.edit', compact('employee', 'departments'));
     }
 
     public function update(Request $request, $id)

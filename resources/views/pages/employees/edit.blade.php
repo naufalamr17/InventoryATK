@@ -63,7 +63,12 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="dept">Dept</label>
-                                            <input id="dept" class="form-control border p-2" type="text" name="dept" value="{{ $employee->dept }}" required>
+                                            <select id="dept" class="form-control border p-2" name="dept" required>
+                                                <option value="" disabled>Select Department</option>
+                                                @foreach ($departments as $dept)
+                                                <option value="{{ $dept }}" {{ $employee->dept == $dept ? 'selected' : '' }}>{{ $dept }}</option>
+                                                @endforeach
+                                            </select>
                                             @if ($errors->has('dept'))
                                             <div class="text-danger mt-2">{{ $errors->first('dept') }}</div>
                                             @endif
