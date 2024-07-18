@@ -122,25 +122,25 @@
 
                                 <div id="dynamic-form">
                                     <div class="row">
-                                        <div class="col">
+                                        <div class="col-md-3 col-12">
                                             <div class="form-group">
                                                 <label for="code">Code</label>
                                                 <input class="form-control border p-2" type="text" name="code[]" required>
                                             </div>
                                         </div>
-                                        <div class="col">
+                                        <div class="col-md-3 col-12">
                                             <div class="form-group">
                                                 <label for="date">Date</label>
                                                 <input class="form-control border p-2" type="date" name="date[]" required>
                                             </div>
                                         </div>
-                                        <div class="col">
+                                        <div class="col-md-3 col-12">
                                             <div class="form-group">
                                                 <label for="time">Time</label>
                                                 <input class="form-control border p-2" type="time" name="time[]" required>
                                             </div>
                                         </div>
-                                        <div class="col">
+                                        <div class="col-md-2 col-12">
                                             <div class="form-group">
                                                 <label for="qty">Qty</label>
                                                 <input class="form-control border p-2" type="number" name="qty[]" required>
@@ -176,25 +176,25 @@
     <script>
         function addFormRow() {
             var row = `<div class="row">
-                        <div class="col">
+                        <div class="col-md-3 col-12">
                             <div class="form-group">
                                 <label for="code">Code</label>
                                 <input class="form-control border p-2" type="text" name="code[]" required>
                             </div>
                         </div>
-                        <div class="col">
+                        <div class="col-md-3 col-12">
                             <div class="form-group">
                                 <label for="date">Date</label>
                                 <input class="form-control border p-2" type="date" name="date[]" required>
                             </div>
                         </div>
-                        <div class="col">
+                        <div class="col-md-3 col-12">
                             <div class="form-group">
                                 <label for="time">Time</label>
                                 <input class="form-control border p-2" type="time" name="time[]" required>
                             </div>
                         </div>
-                        <div class="col">
+                        <div class="col-md-2 col-12">
                             <div class="form-group">
                                 <label for="qty">Qty</label>
                                 <input class="form-control border p-2" type="number" name="qty[]" required>
