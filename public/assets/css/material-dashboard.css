@@ -15323,6 +15323,14 @@ hr.horizontal {
     border-radius: 0.375rem; }
 
 @media (min-width: 1200px) {
+  .g-sidenav-show.rtl .sidenav {
+    transform: translateX(17.125rem); }
+  .g-sidenav-show:not(.rtl) .sidenav {
+    transform: translateX(-17.125rem); }
+  .g-sidenav-show .sidenav.fixed-start + .main-content {
+    margin-left: 0 !important; }
+  .g-sidenav-show.g-sidenav-pinned .sidenav {
+    transform: translateX(0); } }
   .g-sidenav-hidden.rtl .main-content {
     margin-right: 6rem !important; }
   .g-sidenav-hidden.rtl .navbar-vertical:hover {
