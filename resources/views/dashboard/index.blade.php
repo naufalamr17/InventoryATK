@@ -88,6 +88,11 @@
                             <span class="badge bg-danger ms-2" style="animation: breathe 2s infinite;">
                                 !
                             </span>
+                            <div class="ms-auto mb-2">
+                                <button id="exportExcelButton" class="btn bg-gradient-dark mb-0">
+                                    <i class="material-icons text-sm">file_download</i>
+                                </button>
+                            </div>
                             @endif
                         </div>
                     </div>
@@ -101,6 +106,7 @@
     @push('js')
     <script src="{{ asset('assets') }}/js/plugins/chartjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -261,6 +267,71 @@
                 document.getElementById('monthlyDataoutChart'),
                 monthlyDataoutChartConfig
             );
+        });
+
+        // Export to Excel functionality
+        $('#exportExcelButton').on('click', function() {
+            const sheetName = 'Report';
+            const fileName = 'report_inventory';
+
+            const table = document.getElementById('inventoryTable');
+
+            // Memastikan tabel ditemukan sebelum melanjutkan
+            if (!table) {
+                console.error('Tabel tidak ditemukan.');
+                return;
+            }
+
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.table_to_sheet(table);
+
+            const range = XLSX.utils.decode_range(ws['!ref']);
+
+            // Kolom yang ingin diexport (indeks kolom dimulai dari 0)
+            const columnsToExport = [0, 1, 2, 3, 4];
+
+            const filteredData = [];
+            for (let R = range.s.r; R <= range.e.r; ++R) {
+                const row = [];
+                for (let C = 0; C < columnsToExport.length; ++C) {
+                    const colIndex = columnsToExport[C];
+                    const cellAddress = XLSX.utils.encode_cell({
+                        r: R,
+                        c: colIndex
+                    });
+                    if (!ws[cellAddress]) continue;
+                    row.push(ws[cellAddress].v);
+                }
+                filteredData.push(row);
+            }
+
+            // Buat sheet baru dengan data yang difilter
+            const newWs = XLSX.utils.aoa_to_sheet(filteredData);
+
+            const newRange = XLSX.utils.decode_range(newWs['!ref']);
+
+            // Autofit width untuk setiap kolom
+            const colWidths = [];
+            for (let C = newRange.s.c; C <= newRange.e.c; ++C) {
+                let maxWidth = 0;
+                for (let R = newRange.s.r; R <= newRange.e.r; ++R) {
+                    const cellAddress = XLSX.utils.encode_cell({
+                        r: R,
+                        c: C
+                    });
+                    if (!newWs[cellAddress]) continue;
+                    const cellTextLength = XLSX.utils.format_cell(newWs[cellAddress]).length;
+                    maxWidth = Math.max(maxWidth, cellTextLength);
+                }
+                colWidths[C] = {
+                    wch: maxWidth + 2
+                };
+            }
+            newWs['!cols'] = colWidths;
+
+            XLSX.utils.book_append_sheet(wb, newWs, sheetName);
+
+            XLSX.writeFile(wb, fileName + '.xlsx');
         });
     </script>
     @endpush
