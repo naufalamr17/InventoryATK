@@ -86,7 +86,7 @@
 
                                 <div class="form-group mt-4">
                                     <button type="submit" class="btn btn-success btn-block">Update Employee</button>
-                                    <a href="{{ route('inventory') }}" class="btn btn-danger">Cancel</a>
+                                    <a href="{{ route('employee') }}" class="btn btn-danger">Cancel</a>
                                 </div>
                             </form>
                         </div>
