@@ -290,14 +290,16 @@ class InventoryController extends Controller
 
         if (Auth::user()->status == 'Administrator' || Auth::user()->status == 'Super Admin' || Auth::user()->status == 'Auditor' || Auth::user()->hirar == 'Manager' || Auth::user()->hirar == 'Deputy General Manager') {
             $inventory = InventoryTotal::orderBy('code', 'asc')->get();
+            $employee = employee::get();
         } else {
             $inventory = InventoryTotal::where('location', Auth::user()->location)
                 ->orderBy('code', 'asc')->get();
+            $employee = employee::where('area',  Auth::user()->location)->get();
         }
 
         // dd($userLocation);
 
-        return view('pages.asset.adddatot', compact('userLocation', 'inventory'));
+        return view('pages.asset.adddatot', compact('userLocation', 'inventory', 'employee'));
     }
 
     public function storedatot(Request $request)

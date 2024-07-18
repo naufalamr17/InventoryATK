@@ -106,14 +106,19 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="nik">NIK</label>
-                                    <input id="nik" class="form-control border p-2" type="text" name="nik" required>
+                                    <select id="nik" class="form-control code" name="nik" required>
+                                        <option value="" selected disabled>Select Code</option>
+                                        @foreach ($employee as $emp)
+                                        <option value="{{ $emp->nik }}">{{ $emp->nama }} - {{ $emp->nik }}</option>
+                                        @endforeach
+                                    </select>
                                     @if ($errors->has('nik'))
                                     <div class="text-danger mt-2">{{ $errors->first('nik') }}</div>
                                     @endif
 
-                                    <button type="button" id="openModalButton" class="btn btn-danger mt-2">
+                                    <!-- <button type="button" id="openModalButton" class="btn btn-danger mt-2">
                                         <i class="fas fa-camera"></i>
-                                    </button>
+                                    </button> -->
 
                                     <div id="myModal" class="modal">
                                         <div class="modal-content">
