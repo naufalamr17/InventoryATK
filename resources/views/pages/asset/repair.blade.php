@@ -156,25 +156,25 @@
                                 <table id="inventoryTable" class="table align-items-center mb-0">
                                     <thead>
                                         <tr>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Code') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Period') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Date') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Time') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('PIC') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Qty') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Price') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Total') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Location') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Category') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Name') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Unit') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Vendor') }}</th>
+                                            <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Code') }}</th>
+                                            <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Period') }}</th>
+                                            <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Date') }}</th>
+                                            <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Time') }}</th>
+                                            <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('PIC') }}</th>
+                                            <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Qty') }}</th>
+                                            <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Price') }}</th>
+                                            <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Total') }}</th>
+                                            <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Location') }}</th>
+                                            <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Category') }}</th>
+                                            <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Name') }}</th>
+                                            <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Unit') }}</th>
+                                            <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Vendor') }}</th>
                                             @if (Auth::check() && (Auth::user()->status == 'Administrator' || Auth::user()->status == 'Super Admin'))
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Action') }}</th>
+                                            <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Action') }}</th>
                                             @endif
                                         </tr>
                                     </thead>
-                                    <tbody class="text-center">
+                                    <tbody class="text-center" style="font-size: large;">
                                     </tbody>
                                 </table>
                             </div>
