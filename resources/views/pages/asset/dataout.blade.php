@@ -159,7 +159,10 @@
                                             <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Period') }}</th>
                                             <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Date') }}</th>
                                             <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Time') }}</th>
-                                            <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Employee') }}</th>
+                                            <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('NIK') }}</th>
+                                            <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Name Employee') }}</th>
+                                            <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Dept') }}</th>
+                                            <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Hirar') }}</th>
                                             <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Code') }}</th>
                                             <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Qty') }}</th>
                                             <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('PIC') }}</th>
@@ -209,7 +212,19 @@
                     },
                     {
                         data: 'nik',
-                        name: 'employee'
+                        name: 'nik'
+                    },
+                    {
+                        data: 'nama',
+                        name: 'nama'
+                    },
+                    {
+                        data: 'dept',
+                        name: 'dept'
+                    },
+                    {
+                        data: 'jabatan',
+                        name: 'jabatan'
                     },
                     {
                         data: 'code',

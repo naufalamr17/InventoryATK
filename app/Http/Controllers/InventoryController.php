@@ -212,18 +212,18 @@ class InventoryController extends Controller
             }
 
             // Mengubah nilai $inventory->nik menjadi string yang berisi informasi dari employees
-            $inventory->transform(function ($item) {
-                $nik = $item->nik;
-                $nama = $item->nama;
-                $area = $item->area;
-                $dept = $item->dept;
-                $jabatan = $item->jabatan;
+            // $inventory->transform(function ($item) {
+            //     $nik = $item->nik;
+            //     $nama = $item->nama;
+            //     $area = $item->area;
+            //     $dept = $item->dept;
+            //     $jabatan = $item->jabatan;
 
-                // Format string sesuai kebutuhan, misalnya:
-                $item->nik = "$nik|$nama|$area|$dept|$jabatan";
+            //     // Format string sesuai kebutuhan, misalnya:
+            //     $item->nik = "$nik|$nama|$area|$dept|$jabatan";
 
-                return $item;
-            });
+            //     return $item;
+            // });
 
             $inventory = $inventory->map(function ($inv) {
                 // Menetapkan variabel action berdasarkan status pengguna
