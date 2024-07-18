@@ -248,7 +248,7 @@
                     },
                     @endif
                 ],
-                pageLength: 50,
+                pageLength: -1,
                 order: [
                     [0, 'desc']
                 ],
