@@ -8,6 +8,7 @@ use App\Models\Dataout;
 use App\Models\employee;
 use App\Models\inventory;
 use App\Models\InventoryTotal;
+use App\Models\vendor;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
@@ -68,10 +69,11 @@ class InventoryController extends Controller
     {
         $user = Auth::user();
         $userLocation = $user->location;
+        $vendors = vendor::all();
 
         // dd($userLocation);
 
-        return view('pages.asset.inputasset', compact('userLocation'));
+        return view('pages.asset.inputasset', compact('userLocation', 'vendors'));
     }
 
     public function store(Request $request)
@@ -86,6 +88,7 @@ class InventoryController extends Controller
             'category' => 'required|string',
             'name' => 'required|string',
             'unit' => 'required|string',
+            'vendor' => 'required|string',
         ]);
 
         // Generate code based on category and iteration
@@ -106,6 +109,7 @@ class InventoryController extends Controller
         $inventory->category = $validatedData['category'];
         $inventory->name = $validatedData['name'];
         $inventory->unit = $validatedData['unit'];
+        $inventory->vendor_id = $validatedData['vendor'];
         $inventory->code = $code; // Assign the generated code
 
         $inventoryTotal = new InventoryTotal();

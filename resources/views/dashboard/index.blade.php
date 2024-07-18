@@ -11,7 +11,7 @@
                         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
                             <div class="bg-white shadow-dark border-radius-lg py-3 ps-2 pe-2">
                                 <div class="chart">
-                                    <canvas id="pieChart" class="chart-canvas" height="170"></canvas>
+                                    <canvas id="pieChart" class="chart-canvas" height="190"></canvas>
                                 </div>
                             </div>
                         </div>
@@ -25,7 +25,7 @@
                         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
                             <div class="bg-success shadow-dark border-radius-lg py-3 ps-2 pe-2">
                                 <div class="chart">
-                                    <canvas id="monthlyInventoryChart" class="chart-canvas" height="170"></canvas>
+                                    <canvas id="monthlyInventoryChart" class="chart-canvas" height="190"></canvas>
                                 </div>
                             </div>
                         </div>
@@ -39,7 +39,7 @@
                         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
                             <div class="bg-danger shadow-dark border-radius-lg py-3 ps-2 pe-2">
                                 <div class="chart">
-                                    <canvas id="monthlyDataoutChart" class="chart-canvas" height="170"></canvas>
+                                    <canvas id="monthlyDataoutChart" class="chart-canvas" height="190"></canvas>
                                 </div>
                             </div>
                         </div>
@@ -52,7 +52,7 @@
                     <div class="card z-index-2">
                         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
                             <div class="bg-white shadow-dark border-radius-lg py-3 ps-2 pe-2">
-                                <div class="table-responsive p-0" style="height: 200px;">
+                                <div class="table-responsive p-0" style="height: 300px;">
                                     <table id="inventoryTable" class="table align-items-center mb-0">
                                         <thead>
                                             <tr>
