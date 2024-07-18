@@ -265,7 +265,7 @@
                         data: 'location',
                         name: 'location'
                     },
-                    @if(Auth::check() && (Auth::user() - > status == 'Administrator' || Auth::user() - > status == 'Super Admin')) {
+                    @if(Auth::check() && (Auth::user() -> status == 'Administrator' || Auth::user() -> status == 'Super Admin')) {
                         data: 'action',
                         name: 'action',
                         orderable: false,
@@ -326,26 +326,49 @@
 
                 const range = XLSX.utils.decode_range(ws['!ref']);
 
+                // Kolom yang ingin diexport (indeks kolom dimulai dari 0)
+                const columnsToExport = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+
+                const filteredData = [];
+                for (let R = range.s.r; R <= range.e.r; ++R) {
+                    const row = [];
+                    for (let C = 0; C < columnsToExport.length; ++C) {
+                        const colIndex = columnsToExport[C];
+                        const cellAddress = XLSX.utils.encode_cell({
+                            r: R,
+                            c: colIndex
+                        });
+                        if (!ws[cellAddress]) continue;
+                        row.push(ws[cellAddress].v);
+                    }
+                    filteredData.push(row);
+                }
+
+                // Buat sheet baru dengan data yang difilter
+                const newWs = XLSX.utils.aoa_to_sheet(filteredData);
+
+                const newRange = XLSX.utils.decode_range(newWs['!ref']);
+
                 // Autofit width untuk setiap kolom
                 const colWidths = [];
-                for (let C = range.s.c; C <= range.e.c; ++C) {
+                for (let C = newRange.s.c; C <= newRange.e.c; ++C) {
                     let maxWidth = 0;
-                    for (let R = range.s.r; R <= range.e.r; ++R) {
+                    for (let R = newRange.s.r; R <= newRange.e.r; ++R) {
                         const cellAddress = XLSX.utils.encode_cell({
                             r: R,
                             c: C
                         });
-                        if (!ws[cellAddress]) continue;
-                        const cellTextLength = XLSX.utils.format_cell(ws[cellAddress]).length;
+                        if (!newWs[cellAddress]) continue;
+                        const cellTextLength = XLSX.utils.format_cell(newWs[cellAddress]).length;
                         maxWidth = Math.max(maxWidth, cellTextLength);
                     }
                     colWidths[C] = {
                         wch: maxWidth + 2
                     };
                 }
-                ws['!cols'] = colWidths;
+                newWs['!cols'] = colWidths;
 
-                XLSX.utils.book_append_sheet(wb, ws, sheetName);
+                XLSX.utils.book_append_sheet(wb, newWs, sheetName);
 
                 XLSX.writeFile(wb, fileName + '.xlsx');
             });
