@@ -42,7 +42,7 @@ class InventoryController extends Controller
                             </a>
                         </div>
                         <div class="p-1">
-                            <a href="' . route('out_inventory', ['id' => $inv->id]) . '" class="btn btn-warning btn-sm p-0 mt-3" style="width: 24px; height: 24px;">
+                            <a href="' . route('out_inventory', ['id' => $inv->id]) . '" class="btn btn-warning btn-sm p-0 mt-3" style="width: 24px; height: 24px; display: none;">
                                 <i class="material-icons" style="font-size: 16px;">logout</i>
                             </a>
                         </div>
@@ -286,9 +286,16 @@ class InventoryController extends Controller
         $user = Auth::user();
         $userLocation = $user->location;
 
+        if (Auth::user()->status == 'Administrator' || Auth::user()->status == 'Super Admin' || Auth::user()->status == 'Auditor' || Auth::user()->hirar == 'Manager' || Auth::user()->hirar == 'Deputy General Manager') {
+            $inventory = InventoryTotal::orderBy('code', 'asc')->get();
+        } else {
+            $inventory = InventoryTotal::where('location', Auth::user()->location)
+                ->orderBy('code', 'asc')->get();
+        }
+
         // dd($userLocation);
 
-        return view('pages.asset.adddatot', compact('userLocation'));
+        return view('pages.asset.adddatot', compact('userLocation', 'inventory'));
     }
 
     public function storedatot(Request $request)

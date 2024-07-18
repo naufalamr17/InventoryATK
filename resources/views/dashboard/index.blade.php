@@ -56,21 +56,21 @@
                                     <table id="inventoryTable" class="table align-items-center mb-0">
                                         <thead>
                                             <tr>
-                                                <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Code') }}</th>
-                                                <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Name') }}</th>
-                                                <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('QTY') }}</th>
-                                                <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Location') }}</th>
-                                                <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Unit') }}</th>
+                                                <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Code') }}</th>
+                                                <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Name') }}</th>
+                                                <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('QTY') }}</th>
+                                                <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Location') }}</th>
+                                                <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Unit') }}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @forelse($inventoryTableData as $item)
                                             <tr>
-                                                <td class="text-center text-secondary text-xs opacity-7">{{ $item->code }}</td>
-                                                <td class="text-center text-secondary text-xs opacity-7">{{ $item->name }}</td>
-                                                <td class="text-center text-secondary text-xs opacity-7">{{ $item->qty }}</td>
-                                                <td class="text-center text-secondary text-xs opacity-7">{{ $item->location }}</td>
-                                                <td class="text-center text-secondary text-xs opacity-7">{{ $item->unit }}</td>
+                                                <td class="text-center text-secondary opacity-7" style="font-size: large;">{{ $item->code }}</td>
+                                                <td class="text-center text-secondary opacity-7" style="font-size: large;">{{ $item->name }}</td>
+                                                <td class="text-center text-secondary opacity-7" style="font-size: large;">{{ $item->qty }}</td>
+                                                <td class="text-center text-secondary opacity-7" style="font-size: large;">{{ $item->location }}</td>
+                                                <td class="text-center text-secondary opacity-7" style="font-size: large;">{{ $item->unit }}</td>
                                             </tr>
                                             @empty
                                             <tr>

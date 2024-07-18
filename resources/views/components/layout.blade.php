@@ -27,8 +27,7 @@
         Inventory ATK
     </title>
     <!--     Fonts and icons     -->
-    <link rel="stylesheet" type="text/css"
-        href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
     <!-- Nucleo Icons -->
     <link href="{{ asset('assets') }}/css/nucleo-icons.css" rel="stylesheet" />
     <link href="{{ asset('assets') }}/css/nucleo-svg.css" rel="stylesheet" />
@@ -39,36 +38,51 @@
     <!-- CSS Files -->
     <link id="pagestyle" href="{{ asset('assets') }}/css/material-dashboard.css?v=3.0.0" rel="stylesheet" />
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/css/selectize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.min.js"></script>
+
     <style>
-    @keyframes breathe {
-        0% { transform: scale(0.9); }
-        50% { transform: scale(1.3); }
-        100% { transform: scale(0.9); }
-    }
-</style>
+        @keyframes breathe {
+            0% {
+                transform: scale(0.9);
+            }
+
+            50% {
+                transform: scale(1.3);
+            }
+
+            100% {
+                transform: scale(0.9);
+            }
+        }
+    </style>
 </head>
+
 <body class="{{ $bodyClass }}">
 
-{{ $slot }}
+    {{ $slot }}
 
-<script src="{{ asset('assets') }}/js/core/popper.min.js"></script>
-<script src="{{ asset('assets') }}/js/core/bootstrap.min.js"></script>
-<script src="{{ asset('assets') }}/js/plugins/perfect-scrollbar.min.js"></script>
-<script src="{{ asset('assets') }}/js/plugins/smooth-scrollbar.min.js"></script>
-@stack('js')
-<script>
-    var win = navigator.platform.indexOf('Win') > -1;
-    if (win && document.querySelector('#sidenav-scrollbar')) {
-        var options = {
-            damping: '0.5'
+    <script src="{{ asset('assets') }}/js/core/popper.min.js"></script>
+    <script src="{{ asset('assets') }}/js/core/bootstrap.min.js"></script>
+    <script src="{{ asset('assets') }}/js/plugins/perfect-scrollbar.min.js"></script>
+    <script src="{{ asset('assets') }}/js/plugins/smooth-scrollbar.min.js"></script>
+    @stack('js')
+    <script>
+        var win = navigator.platform.indexOf('Win') > -1;
+        if (win && document.querySelector('#sidenav-scrollbar')) {
+            var options = {
+                damping: '0.5'
+            }
+            Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
         }
-        Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
-    }
-
-</script>
-<!-- Github buttons -->
-<script async defer src="https://buttons.github.io/buttons.js"></script>
-<!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
-<script src="{{ asset('assets') }}/js/material-dashboard.min.js?v=3.0.0"></script>
+    </script>
+    <!-- Github buttons -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+    <script src="{{ asset('assets') }}/js/material-dashboard.min.js?v=3.0.0"></script>
 </body>
+
 </html>

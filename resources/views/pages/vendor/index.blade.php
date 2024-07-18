@@ -72,16 +72,16 @@
                                 <table id="inventoryTable" class="table align-items-center mb-0">
                                     <thead>
                                         <tr>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Name') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Address') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Contact') }}</th>
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('PIC') }}</th>
+                                            <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Name') }}</th>
+                                            <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Address') }}</th>
+                                            <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Contact') }}</th>
+                                            <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('PIC') }}</th>
                                             @if (Auth::check() && (Auth::user()->status == 'Administrator' || Auth::user()->status == 'Modified' || Auth::user()->status == 'Super Admin'))
-                                            <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">{{ __('Action') }}</th>
+                                            <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Action') }}</th>
                                             @endif
                                         </tr>
                                     </thead>
-                                    <tbody class="text-center">
+                                    <tbody class="text-center" style="font-size: large;">
                                     </tbody>
                                 </table>
                             </div>

@@ -125,7 +125,12 @@
                                         <div class="col-md-3 col-12">
                                             <div class="form-group">
                                                 <label for="code">Code</label>
-                                                <input class="form-control border p-2" type="text" name="code[]" required>
+                                                <select class="form-control code" name="code[]" required>
+                                                    <option value="" selected disabled>Select Code</option>
+                                                    @foreach ($inventory as $item)
+                                                    <option value="{{ $item->code }}">{{ $item->name }} - {{ $item->code }}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-md-3 col-12">
@@ -172,46 +177,85 @@
     </main>
     <x-plugins></x-plugins>
 
+    <!-- Pastikan jQuery diinisialisasi terlebih dahulu -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Kemudian baru inisialisasi Selectize.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.min.js"></script>
+
     <script>
+        jQuery(document).ready(function($) {
+            // Inisialisasi Selectize.js pada elemen select dengan class 'code'
+            $('.code').selectize({
+                create: false,
+                sortField: 'text',
+                placeholder: 'Search or select code...',
+                allowClear: true,
+                dropdownParent: 'body',
+                dropdownAutoWidth: false
+                // Add more options as needed
+            });
+        });
+
         function addFormRow() {
             var row = `<div class="row">
-                        <div class="col-md-3 col-12">
-                            <div class="form-group">
-                                <label for="code">Code</label>
-                                <input class="form-control border p-2" type="text" name="code[]" required>
-                            </div>
+                    <div class="col-md-3 col-12">
+                        <div class="form-group">
+                            <label for="code">Code</label>
+                            <select class="form-control code" name="code[]" required>
+                                <option value="" selected disabled>Select Code</option>
+                                @foreach ($inventory as $item)
+                                <option value="{{ $item->code }}">{{ $item->name }} - {{ $item->code }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                        <div class="col-md-3 col-12">
-                            <div class="form-group">
-                                <label for="date">Date</label>
-                                <input class="form-control border p-2" type="date" name="date[]" required>
-                            </div>
+                    </div>
+                    <div class="col-md-3 col-12">
+                        <div class="form-group">
+                            <label for="date">Date</label>
+                            <input class="form-control border p-2" type="date" name="date[]" required>
                         </div>
-                        <div class="col-md-3 col-12">
-                            <div class="form-group">
-                                <label for="time">Time</label>
-                                <input class="form-control border p-2" type="time" name="time[]" required>
-                            </div>
+                    </div>
+                    <div class="col-md-3 col-12">
+                        <div class="form-group">
+                            <label for="time">Time</label>
+                            <input class="form-control border p-2" type="time" name="time[]" required>
                         </div>
-                        <div class="col-md-2 col-12">
-                            <div class="form-group">
-                                <label for="qty">Qty</label>
-                                <input class="form-control border p-2" type="number" name="qty[]" required>
-                            </div>
+                    </div>
+                    <div class="col-md-2 col-12">
+                        <div class="form-group">
+                            <label for="qty">Qty</label>
+                            <input class="form-control border p-2" type="number" name="qty[]" required>
                         </div>
-                        <div class="col-md-1 col-12 mt-2">
-                            <div class="form-group">
-                                <button type="button" class="btn btn-danger mt-4" onclick="removeFormRow(this)">X</button>
-                            </div>
+                    </div>
+                    <div class="col-md-1 col-12 mt-2">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-danger mt-4" onclick="removeFormRow(this)">X</button>
                         </div>
-                    </div>`;
+                    </div>
+                </div>`;
             $('#dynamic-form').append(row);
+
+            // Find the newly added select element with class 'code'
+            var newCodeSelect = $('#dynamic-form .code').last();
+
+            // Initialize Selectize.js on the newly added element
+            newCodeSelect.selectize({
+                create: false,
+                sortField: 'text',
+                placeholder: 'Search or select code...',
+                allowClear: true,
+                dropdownParent: 'body',
+                dropdownAutoWidth: false
+            });
         }
 
         function removeFormRow(button) {
             $(button).closest('.row').remove();
         }
+
+        // Script untuk QR Code Scanner
+        // ...
     </script>
 
     <script>
