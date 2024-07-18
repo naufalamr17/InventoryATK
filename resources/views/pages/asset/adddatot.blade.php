@@ -95,7 +95,11 @@
 
                                 <div class="form-group">
                                     <label for="pic">PIC</label>
-                                    <input id="pic" class="form-control border p-2" type="text" name="pic" required>
+                                    <input id="pic" class="form-control border p-2" type="text" name="pic" list="picList" required>
+                                    <datalist id="picList">
+                                        <option value="Reggie">
+                                        <option value="Nurbaya">
+                                    </datalist>
                                     @if ($errors->has('pic'))
                                     <div class="text-danger mt-2">{{ $errors->first('pic') }}</div>
                                     @endif
