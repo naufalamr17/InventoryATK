@@ -274,10 +274,11 @@
                     @endif
                 ],
                 pageLength: 50,
+                lengthMenu: [0, 5, 10, 50, 100, -1],
                 order: [
                     [1, 'desc']
                 ],
-                dom: '<"top">rt<"bottom"ip><"clear">',
+                dom: '<"top">lrt<"bottom"ip><"clear">',
                 language: {
                     processing: "<div class='d-flex justify-content-center align-items-center' style='position: fixed; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.8); top: 0; left: 0; z-index: 1000;'>" +
                         "<div class='spinner-border' role='status'>" +
