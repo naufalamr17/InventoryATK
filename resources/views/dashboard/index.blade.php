@@ -7,7 +7,7 @@
         <div class="container-fluid py-4">
             <form method="GET" action="{{ route('dashboard') }}" id="filterForm">
                 <div class="row">
-                    <div class="col-lg-3 col-md-6 mt-4 mb-4">
+                    <!-- <div class="col-lg-3 col-md-6 mt-4 mb-4">
                         <div class="card">
                             <div class="card-header p-3 pt-2">
                                 <div class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
@@ -23,6 +23,30 @@
                             </div>
                             <hr class="dark horizontal my-0">
                             <div class="card-footer p-3">
+                                <div class="d-flex">
+                                    <input type="month" id="monthFilterMasuk" name="monthMasuk" class="form-control form-control-sm" value="{{ $selectedMonthMasuk }}"> ||
+                                    <input type="number" id="yearFilterMasuk" name="yearMasuk" class="form-control form-control-sm ms-2" placeholder="Input Year" value="{{ $selectedYearMasuk }}">
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                    <div class="col-lg-3 col-md-6 mt-4 mb-4">
+                        <div class="card" style="height: 272px;">
+                            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
+                                <div class="bg-white shadow-dark border-radius-lg py-3 ps-2 pe-2" style="height: 223px;">
+                                    <div class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n3 ms-n4 position-absolute">
+                                        <i class="material-icons opacity-10">payments</i>
+                                    </div>
+                                    <div class="text-center mt-6" style="height: 7.5rem;">
+                                        <p class="text-2xl mb-0 text-capitalize">Total Pengeluaran</p>
+                                        <hr>
+                                        <div class="total-price">
+                                            <h5>Total : Rp.{{ number_format($totalPriceMasuk, 0, ',', '.') }}</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
                                 <div class="d-flex">
                                     <input type="month" id="monthFilterMasuk" name="monthMasuk" class="form-control form-control-sm" value="{{ $selectedMonthMasuk }}"> ||
                                     <input type="number" id="yearFilterMasuk" name="yearMasuk" class="form-control form-control-sm ms-2" placeholder="Input Year" value="{{ $selectedYearMasuk }}">
