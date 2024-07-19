@@ -7,34 +7,15 @@
         <div class="container-fluid py-4">
             <form method="GET" action="{{ route('dashboard') }}" id="filterForm">
                 <div class="row">
-                    <div class="col-lg-4 col-md-6 mt-4 mb-4">
-                        <div class="card">
-                            <div class="card-header p-3 pt-2">
-                                <div class="icon icon-lg icon-shape bg-gradient-dark shadow-success text-center border-radius-xl mt-n4 position-absolute">
-                                    <i class="material-icons opacity-10">payments</i>
-                                </div>
-                                <div class="text-end pt-1">
-                                    <p class="text-sm mb-0 text-capitalize">Total Harga Barang Tersisa</p>
-                                    <div class="total-price">
-                                        <h4>Total : Rp.{{ number_format($totalPriceSisa, 0, ',', '.') }}</h4>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr class="dark horizontal my-0">
-                            <div class="card-footer p-3">
-                                <input type="month" id="monthFilterSisa" name="monthSisa" class="form-control form-control-sm" value="{{ $selectedMonthSisa }}">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-md-6 mt-4 mb-4">
+                    <div class="col-lg-3 col-md-6 mt-4 mb-4">
                         <div class="card">
                             <div class="card-header p-3 pt-2">
                                 <div class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
                                     <i class="material-icons opacity-10">payments</i>
                                 </div>
-                                <div class="text-end pt-1">
-                                    <p class="text-sm mb-0 text-capitalize">Harga Barang Masuk</p>
+                                <div class="text-end mt-6" style="height: 7.5rem;">
+                                    <p class="text-2xl mb-0 text-capitalize">Total Pengeluaran</p>
+                                    <hr>
                                     <div class="total-price">
                                         <h4>Total : Rp.{{ number_format($totalPriceMasuk, 0, ',', '.') }}</h4>
                                     </div>
@@ -42,127 +23,107 @@
                             </div>
                             <hr class="dark horizontal my-0">
                             <div class="card-footer p-3">
-                                <input type="month" id="monthFilterMasuk" name="monthMasuk" class="form-control form-control-sm" value="{{ $selectedMonthMasuk }}">
+                                <div class="d-flex">
+                                    <input type="month" id="monthFilterMasuk" name="monthMasuk" class="form-control form-control-sm" value="{{ $selectedMonthMasuk }}"> ||
+                                    <input type="number" id="yearFilterMasuk" name="yearMasuk" class="form-control form-control-sm ms-2" placeholder="Input Year" value="{{ $selectedYearMasuk }}">
+                                </div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-lg-4 col-md-6 mt-4 mb-4">
-                        <div class="card">
-                            <div class="card-header p-3 pt-2">
-                                <div class="icon icon-lg icon-shape bg-gradient-danger shadow-success text-center border-radius-xl mt-n4 position-absolute">
-                                    <i class="material-icons opacity-10">payments</i>
-                                </div>
-                                <div class="text-end pt-1">
-                                    <p class="text-sm mb-0 text-capitalize">Harga Barang Keluar</p>
-                                    <div class="total-price">
-                                        <h4>Total : Rp.{{ number_format($totalPriceKeluar, 0, ',', '.') }}</h4>
+                    <div class="col-lg-3 col-md-6 mt-4 mb-4">
+                        <div class="card z-index-2">
+                            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
+                                <div class="bg-white shadow-dark border-radius-lg py-3 ps-2 pe-2">
+                                    <div class="chart">
+                                        <canvas id="pieChart" class="chart-canvas" height="190"></canvas>
                                     </div>
                                 </div>
                             </div>
-                            <hr class="dark horizontal my-0">
-                            <div class="card-footer p-3">
-                                <input type="month" id="monthFilterKeluar" name="monthKeluar" class="form-control form-control-sm" value="{{ $selectedMonthKeluar }}">
+                            <div class="card-body">
+                                <h6 class="mb-0">Persediaan Barang</h6>
                             </div>
                         </div>
                     </div>
+                    <div class="col-lg-3 col-md-6 mt-4 mb-4">
+                        <div class="card z-index-2">
+                            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
+                                <div class="bg-success shadow-dark border-radius-lg py-3 ps-2 pe-2">
+                                    <div class="chart">
+                                        <canvas id="monthlyInventoryChart" class="chart-canvas" height="190"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <h6 class="mb-0">Data Masuk</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 mt-4 mb-4">
+                        <div class="card z-index-2">
+                            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
+                                <div class="bg-danger shadow-dark border-radius-lg py-3 ps-2 pe-2">
+                                    <div class="chart">
+                                        <canvas id="monthlyDataoutChart" class="chart-canvas" height="190"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <h6 class="mb-0">Data Keluar</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-6 mt-4 mb-4">
+                        <div class="card z-index-2">
+                            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
+                                <div class="bg-white shadow-dark border-radius-lg py-3 ps-2 pe-2">
+                                    <div class="table-responsive p-0" style="height: 300px;">
+                                        <table id="inventoryTable" class="table align-items-center mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Code') }}</th>
+                                                    <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Name') }}</th>
+                                                    <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('QTY') }}</th>
+                                                    <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Location') }}</th>
+                                                    <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Unit') }}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse($inventoryTableData as $item)
+                                                <tr>
+                                                    <td class="text-center text-secondary opacity-7" style="font-size: large;">{{ $item->code }}</td>
+                                                    <td class="text-center text-secondary opacity-7" style="font-size: large;">{{ $item->name }}</td>
+                                                    <td class="text-center text-secondary opacity-7" style="font-size: large;">{{ $item->qty }}</td>
+                                                    <td class="text-center text-secondary opacity-7" style="font-size: large;">{{ $item->location }}</td>
+                                                    <td class="text-center text-secondary opacity-7" style="font-size: large;">{{ $item->unit }}</td>
+                                                </tr>
+                                                @empty
+                                                <tr>
+                                                    <td colspan="5" class="text-center text-secondary text-xs opacity-7">Persediaan Barang Aman</td>
+                                                </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body d-flex justify-start align-items-center">
+                                <h6 class="mb-0">Barang Tersisa Sedikit</h6>
+                                @if($inventoryTableData->isNotEmpty())
+                                <span class="badge bg-danger ms-2" style="animation: breathe 2s infinite;">
+                                    !
+                                </span>
+                                <div class="ms-auto mb-2">
+                                    <button id="exportExcelButton" class="btn bg-gradient-dark mb-0">
+                                        <i class="material-icons text-sm">file_download</i>
+                                    </button>
+                                </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    <x-footers.auth></x-footers.auth>
                 </div>
             </form>
-            <div class="row">
-
-                <div class="col-lg-4 col-md-6 mt-4 mb-4">
-                    <div class="card z-index-2">
-                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
-                            <div class="bg-white shadow-dark border-radius-lg py-3 ps-2 pe-2">
-                                <div class="chart">
-                                    <canvas id="pieChart" class="chart-canvas" height="190"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <h6 class="mb-0">Persediaan Barang</h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mt-4 mb-4">
-                    <div class="card z-index-2">
-                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
-                            <div class="bg-success shadow-dark border-radius-lg py-3 ps-2 pe-2">
-                                <div class="chart">
-                                    <canvas id="monthlyInventoryChart" class="chart-canvas" height="190"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <h6 class="mb-0">Data Masuk</h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mt-4 mb-4">
-                    <div class="card z-index-2">
-                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
-                            <div class="bg-danger shadow-dark border-radius-lg py-3 ps-2 pe-2">
-                                <div class="chart">
-                                    <canvas id="monthlyDataoutChart" class="chart-canvas" height="190"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <h6 class="mb-0">Data Keluar</h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-12 col-md-6 mt-4 mb-4">
-                    <div class="card z-index-2">
-                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
-                            <div class="bg-white shadow-dark border-radius-lg py-3 ps-2 pe-2">
-                                <div class="table-responsive p-0" style="height: 300px;">
-                                    <table id="inventoryTable" class="table align-items-center mb-0">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Code') }}</th>
-                                                <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Name') }}</th>
-                                                <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('QTY') }}</th>
-                                                <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Location') }}</th>
-                                                <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Unit') }}</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @forelse($inventoryTableData as $item)
-                                            <tr>
-                                                <td class="text-center text-secondary opacity-7" style="font-size: large;">{{ $item->code }}</td>
-                                                <td class="text-center text-secondary opacity-7" style="font-size: large;">{{ $item->name }}</td>
-                                                <td class="text-center text-secondary opacity-7" style="font-size: large;">{{ $item->qty }}</td>
-                                                <td class="text-center text-secondary opacity-7" style="font-size: large;">{{ $item->location }}</td>
-                                                <td class="text-center text-secondary opacity-7" style="font-size: large;">{{ $item->unit }}</td>
-                                            </tr>
-                                            @empty
-                                            <tr>
-                                                <td colspan="5" class="text-center text-secondary text-xs opacity-7">Persediaan Barang Aman</td>
-                                            </tr>
-                                            @endforelse
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body d-flex justify-start align-items-center">
-                            <h6 class="mb-0">Barang Tersisa Sedikit</h6>
-                            @if($inventoryTableData->isNotEmpty())
-                            <span class="badge bg-danger ms-2" style="animation: breathe 2s infinite;">
-                                !
-                            </span>
-                            <div class="ms-auto mb-2">
-                                <button id="exportExcelButton" class="btn bg-gradient-dark mb-0">
-                                    <i class="material-icons text-sm">file_download</i>
-                                </button>
-                            </div>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-                <x-footers.auth></x-footers.auth>
-            </div>
         </div>
     </main>
     <x-plugins></x-plugins>
@@ -173,15 +134,11 @@
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
     <script>
-        document.getElementById('monthFilterSisa').addEventListener('change', function() {
+        document.getElementById('yearFilterMasuk').addEventListener('change', function() {
             document.getElementById('filterForm').submit();
         });
 
         document.getElementById('monthFilterMasuk').addEventListener('change', function() {
-            document.getElementById('filterForm').submit();
-        });
-
-        document.getElementById('monthFilterKeluar').addEventListener('change', function() {
             document.getElementById('filterForm').submit();
         });
     </script>
