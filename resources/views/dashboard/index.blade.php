@@ -38,7 +38,7 @@
                                         <i class="material-icons opacity-10">payments</i>
                                     </div>
                                     <div class="text-center mt-6" style="height: 7.5rem;">
-                                        <p class="text-2xl mb-0 text-capitalize">Total Pengeluaran</p>
+                                        <p class="text-2xl mb-0 text-capitalize">Total Belanja</p>
                                         <hr>
                                         <div class="total-price">
                                             <h5>Total : Rp.{{ number_format($totalPriceMasuk, 0, ',', '.') }}</h5>
