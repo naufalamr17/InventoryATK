@@ -5,7 +5,71 @@
         <x-navbars.navs.auth titlePage="DASHBOARD INVENTORY ATK"></x-navbars.navs.auth>
         <!-- End Navbar -->
         <div class="container-fluid py-4">
+            <form method="GET" action="{{ route('dashboard') }}" id="filterForm">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 mt-4 mb-4">
+                        <div class="card">
+                            <div class="card-header p-3 pt-2">
+                                <div class="icon icon-lg icon-shape bg-gradient-dark shadow-success text-center border-radius-xl mt-n4 position-absolute">
+                                    <i class="material-icons opacity-10">payments</i>
+                                </div>
+                                <div class="text-end pt-1">
+                                    <p class="text-sm mb-0 text-capitalize">Total Harga Barang Tersisa</p>
+                                    <div class="total-price">
+                                        <h4>Total : Rp.{{ number_format($totalPriceSisa, 0, ',', '.') }}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="dark horizontal my-0">
+                            <div class="card-footer p-3">
+                                <input type="month" id="monthFilterSisa" name="monthSisa" class="form-control form-control-sm" value="{{ $selectedMonthSisa }}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 mt-4 mb-4">
+                        <div class="card">
+                            <div class="card-header p-3 pt-2">
+                                <div class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
+                                    <i class="material-icons opacity-10">payments</i>
+                                </div>
+                                <div class="text-end pt-1">
+                                    <p class="text-sm mb-0 text-capitalize">Harga Barang Masuk</p>
+                                    <div class="total-price">
+                                        <h4>Total : Rp.{{ number_format($totalPriceMasuk, 0, ',', '.') }}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="dark horizontal my-0">
+                            <div class="card-footer p-3">
+                                <input type="month" id="monthFilterMasuk" name="monthMasuk" class="form-control form-control-sm" value="{{ $selectedMonthMasuk }}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 mt-4 mb-4">
+                        <div class="card">
+                            <div class="card-header p-3 pt-2">
+                                <div class="icon icon-lg icon-shape bg-gradient-danger shadow-success text-center border-radius-xl mt-n4 position-absolute">
+                                    <i class="material-icons opacity-10">payments</i>
+                                </div>
+                                <div class="text-end pt-1">
+                                    <p class="text-sm mb-0 text-capitalize">Harga Barang Keluar</p>
+                                    <div class="total-price">
+                                        <h4>Total : Rp.{{ number_format($totalPriceKeluar, 0, ',', '.') }}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="dark horizontal my-0">
+                            <div class="card-footer p-3">
+                                <input type="month" id="monthFilterKeluar" name="monthKeluar" class="form-control form-control-sm" value="{{ $selectedMonthKeluar }}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
             <div class="row">
+
                 <div class="col-lg-4 col-md-6 mt-4 mb-4">
                     <div class="card z-index-2">
                         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
@@ -107,6 +171,20 @@
     <script src="{{ asset('assets') }}/js/plugins/chartjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+    <script>
+        document.getElementById('monthFilterSisa').addEventListener('change', function() {
+            document.getElementById('filterForm').submit();
+        });
+
+        document.getElementById('monthFilterMasuk').addEventListener('change', function() {
+            document.getElementById('filterForm').submit();
+        });
+
+        document.getElementById('monthFilterKeluar').addEventListener('change', function() {
+            document.getElementById('filterForm').submit();
+        });
+    </script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

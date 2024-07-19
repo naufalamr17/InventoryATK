@@ -12,8 +12,13 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        // Get the selected months from the request, default to the current month if not provided
+        $selectedMonthSisa = $request->input('monthSisa', now()->format('Y-m'));
+        $selectedMonthMasuk = $request->input('monthMasuk', now()->format('Y-m'));
+        $selectedMonthKeluar = $request->input('monthKeluar', now()->format('Y-m'));
+
         if (Auth::user()->status == 'Administrator' || Auth::user()->status == 'Super Admin' || Auth::user()->status == 'Auditor' || Auth::user()->hirar == 'Manager' || Auth::user()->hirar == 'Deputy General Manager') {
             // Fetch data for Pie Chart (Data Masuk per Kategori)
             $inventoryData = InventoryTotal::select(DB::raw('SUBSTRING_INDEX(code, "-", 1) as category'), DB::raw('SUM(qty) as total'))
@@ -37,6 +42,24 @@ class DashboardController extends Controller
                 ->orderBy('code', 'asc')
                 ->where('qty', '<=', 5) // Ubah kondisi where
                 ->get();
+
+            // Calculate total prices
+            $totalPriceSisa = (Inventory::where(DB::raw('DATE_FORMAT(date, "%Y-%m")'), $selectedMonthSisa)->sum(DB::raw('price * qty')))-(Dataout::select(DB::raw('SUM(dataouts.qty * inventories.price) as total'))
+            ->join('inventories', function ($join) {
+                $join->on('dataouts.code', '=', 'inventories.code')
+                    ->on(DB::raw('DATE_FORMAT(dataouts.date, "%Y-%m")'), '=', DB::raw('DATE_FORMAT(inventories.date, "%Y-%m")'));
+            })
+            ->where(DB::raw('DATE_FORMAT(dataouts.date, "%Y-%m")'), $selectedMonthSisa)
+            ->first()->total);
+
+            $totalPriceMasuk = Inventory::where(DB::raw('DATE_FORMAT(date, "%Y-%m")'), $selectedMonthMasuk)->sum(DB::raw('price * qty'));
+            $totalPriceKeluar = Dataout::select(DB::raw('SUM(dataouts.qty * inventories.price) as total'))
+                ->join('inventories', function ($join) {
+                    $join->on('dataouts.code', '=', 'inventories.code')
+                        ->on(DB::raw('DATE_FORMAT(dataouts.date, "%Y-%m")'), '=', DB::raw('DATE_FORMAT(inventories.date, "%Y-%m")'));
+                })
+                ->where(DB::raw('DATE_FORMAT(dataouts.date, "%Y-%m")'), $selectedMonthKeluar)
+                ->first()->total;
         } else {
             // Fetch data for Pie Chart (Data Masuk per Kategori with location condition)
             $inventoryData = InventoryTotal::select(DB::raw('SUBSTRING_INDEX(code, "-", 1) as category'), DB::raw('SUM(qty) as total'))
@@ -59,21 +82,34 @@ class DashboardController extends Controller
                 ->groupBy(DB::raw('DATE_FORMAT(dataouts.date, "%Y-%m")'))
                 ->get();
 
-            // Fetch data for Inventory Table with additional location condition
+            // Fetch data for Inventory Table
             $inventoryTableData = InventoryTotal::select('code', 'name', 'qty', 'location', 'unit')
+                ->where('location', Auth::user()->location)
                 ->orderBy('code', 'asc')
-                ->where('qty', '<=', 5)
-                ->where('location', Auth::user()->location) // Add location condition
+                ->where('qty', '<=', 5) // Ubah kondisi where
                 ->get();
+
+            // Calculate total prices with location condition
+            $totalPriceSisa = (Inventory::where('location', Auth::user()->location)->where(DB::raw('DATE_FORMAT(date, "%Y-%m")'), $selectedMonthSisa)->sum(DB::raw('price * qty')))-(Dataout::select(DB::raw('SUM(dataouts.qty * inventories.price) as total'))
+            ->join('inventories', function ($join) {
+                $join->on('dataouts.code', '=', 'inventories.code')
+                    ->on(DB::raw('DATE_FORMAT(dataouts.date, "%Y-%m")'), '=', DB::raw('DATE_FORMAT(inventories.date, "%Y-%m")'));
+            })
+            ->where('inventory_totals.location', Auth::user()->location)
+            ->where(DB::raw('DATE_FORMAT(dataouts.date, "%Y-%m")'), $selectedMonthSisa)
+            ->first()->total);
+
+            $totalPriceMasuk = Inventory::where('location', Auth::user()->location)->where(DB::raw('DATE_FORMAT(date, "%Y-%m")'), $selectedMonthMasuk)->sum(DB::raw('price * qty'));
+            $totalPriceKeluar = Dataout::select(DB::raw('SUM(dataouts.qty * inventories.price) as total'))
+                ->join('inventories', function ($join) {
+                    $join->on('dataouts.code', '=', 'inventories.code')
+                        ->on(DB::raw('DATE_FORMAT(dataouts.date, "%Y-%m")'), '=', DB::raw('DATE_FORMAT(inventories.date, "%Y-%m")'));
+                })
+                ->where('inventory_totals.location', Auth::user()->location)
+                ->where(DB::raw('DATE_FORMAT(dataouts.date, "%Y-%m")'), $selectedMonthKeluar)
+                ->first()->total;
         }
 
-        // dd($monthlyDataoutData);
-
-        return view('dashboard.index', [
-            'inventoryData' => $inventoryData,
-            'monthlyInventoryData' => $monthlyInventoryData,
-            'monthlyDataoutData' => $monthlyDataoutData,
-            'inventoryTableData' => $inventoryTableData,
-        ]);
+        return view('dashboard.index', compact('inventoryData', 'monthlyInventoryData', 'monthlyDataoutData', 'inventoryTableData', 'totalPriceSisa', 'totalPriceMasuk', 'totalPriceKeluar', 'selectedMonthSisa', 'selectedMonthMasuk', 'selectedMonthKeluar'));
     }
 }
