@@ -136,7 +136,7 @@
                                             <select id="vendor" class="form-control border p-2" name="vendor" required>
                                                 <option value="" selected disabled>Select Vendor</option>
                                                 @foreach ($vendors as $vendor)
-                                                <option value="{{ $vendor->id }}" {{ $in->vendor_id == $vendor->id ? 'selected' : 'disabled' }}>{{ $vendor->nama }}</option>
+                                                <option value="{{ $vendor->id }}" {{ $in->vendor_id == $vendor->id ? 'selected' : '' }}>{{ $vendor->nama }}</option>
                                                 @endforeach
                                             </select>
                                             @if ($errors->has('vendor'))
