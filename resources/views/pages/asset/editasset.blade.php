@@ -130,6 +130,19 @@
                                             <div class="text-danger mt-2">{{ $errors->first('unit') }}</div>
                                             @endif
                                         </div>
+
+                                        <div class="form-group">
+                                            <label for="vendor">Vendor</label>
+                                            <select id="vendor" class="form-control border p-2" name="vendor" required>
+                                                <option value="" selected disabled>Select Vendor</option>
+                                                @foreach ($vendors as $vendor)
+                                                <option value="{{ $vendor->id }}" {{ $in->vendor_id == $vendor->id ? 'selected' : 'disabled' }}>{{ $vendor->nama }}</option>
+                                                @endforeach
+                                            </select>
+                                            @if ($errors->has('vendor'))
+                                            <div class="text-danger mt-2">{{ $errors->first('vendor') }}</div>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
 

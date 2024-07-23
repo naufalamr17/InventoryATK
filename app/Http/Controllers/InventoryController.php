@@ -345,8 +345,9 @@ class InventoryController extends Controller
     {
         $inventory = InventoryTotal::findOrFail($id);
         $in = Inventory::where('code', $inventory->code)->firstOrFail();
+        $vendors = vendor::all();
 
-        return view('pages.asset.editasset', compact('inventory', 'in'));
+        return view('pages.asset.editasset', compact('inventory', 'in', 'vendors'));
     }
 
     public function storein(Request $request, $id)
@@ -384,6 +385,7 @@ class InventoryController extends Controller
         $inventory->category = $request->category;
         $inventory->name = $request->name;
         $inventory->unit = $request->unit;
+        $inventory->vendor_id = $request->vendor;
         $inventory->save();
 
         // Update saldo
