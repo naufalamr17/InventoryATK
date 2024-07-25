@@ -292,9 +292,8 @@ class InventoryController extends Controller
             $inventory = InventoryTotal::orderBy('code', 'asc')->get();
             $employee = employee::get();
         } else {
-            $inventory = InventoryTotal::where('location', Auth::user()->location)
-                ->orderBy('code', 'asc')->get();
-            $employee = employee::where('area',  Auth::user()->location)->get();
+            $inventory = InventoryTotal::orderBy('code', 'asc')->get();
+            $employee = employee::get();
         }
 
         // dd($userLocation);
