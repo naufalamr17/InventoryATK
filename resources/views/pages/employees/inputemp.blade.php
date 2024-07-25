@@ -49,9 +49,9 @@
                                             <label for="area">Area</label>
                                             <select id="area" class="form-control border p-2" name="area" required readonly>
                                                 <option value="" selected disabled>Select Area</option>
-                                                <option value="Head Office" {{ $userLocation == 'Head Office' ? 'selected' : 'disabled' }}>Head Office</option>
-                                                <option value="Office Kendari" {{ $userLocation == 'Office Kendari' ? 'selected' : 'disabled' }}>Office Kendari</option>
-                                                <option value="Site Molore" {{ $userLocation == 'Site Molore' ? 'selected' : 'disabled' }}>Site Molore</option>
+                                                <option value="Head Office">Head Office</option>
+                                                <option value="Office Kendari">Office Kendari</option>
+                                                <option value="Site Molore">Site Molore</option>
                                             </select>
                                             @if ($errors->has('area'))
                                             <div class="text-danger mt-2">{{ $errors->first('area') }}</div>
