@@ -303,6 +303,7 @@ class InventoryController extends Controller
 
     public function storedatot(Request $request)
     {
+        // dd($request);
         $validatedData = $request->validate([
             'pic' => 'required|string|max:255',
             'nik' => 'required|string|max:255',
@@ -310,6 +311,7 @@ class InventoryController extends Controller
             'date.*' => 'required|date',
             'time.*' => 'required|date_format:H:i',
             'qty.*' => 'required|integer|min:1',
+            'remarks.*' => 'nullable|string',
         ]);
 
         // dd($validatedData); // Uncomment this line if you want to debug the validated data
@@ -325,6 +327,7 @@ class InventoryController extends Controller
                 'date' => $validatedData['date'][$i],
                 'time' => $validatedData['time'][$i],
                 'qty' => $validatedData['qty'][$i],
+                'remarks' => $validatedData['remarks'][$i],
             ]);
 
             // Update InventoryTotal

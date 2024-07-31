@@ -131,7 +131,7 @@
 
                                 <div id="dynamic-form">
                                     <div class="row">
-                                        <div class="col-md-3 col-12">
+                                        <div class="col-md-2 col-12">
                                             <div class="form-group">
                                                 <label for="code">Code</label>
                                                 <select class="form-control code" name="code[]" required>
@@ -142,13 +142,13 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-3 col-12">
+                                        <div class="col-md-2 col-12">
                                             <div class="form-group">
                                                 <label for="date">Date</label>
                                                 <input class="form-control border p-2" type="date" name="date[]" required>
                                             </div>
                                         </div>
-                                        <div class="col-md-3 col-12">
+                                        <div class="col-md-2 col-12">
                                             <div class="form-group">
                                                 <label for="time">Time</label>
                                                 <input class="form-control border p-2" type="time" name="time[]" required>
@@ -158,6 +158,12 @@
                                             <div class="form-group">
                                                 <label for="qty">Qty</label>
                                                 <input class="form-control border p-2" type="number" name="qty[]" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-12">
+                                            <div class="form-group">
+                                                <label for="remarks">Remarks</label>
+                                                <input class="form-control border p-2" type="text" name="remarks[]">
                                             </div>
                                         </div>
                                         <div class="col-md-1 col-12 mt-2">
@@ -208,7 +214,7 @@
 
         function addFormRow() {
             var row = `<div class="row">
-                    <div class="col-md-3 col-12">
+                    <div class="col-md-2 col-12">
                         <div class="form-group">
                             <label for="code">Code</label>
                             <select class="form-control code" name="code[]" required>
@@ -219,13 +225,13 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-3 col-12">
+                    <div class="col-md-2 col-12">
                         <div class="form-group">
                             <label for="date">Date</label>
                             <input class="form-control border p-2" type="date" name="date[]" required>
                         </div>
                     </div>
-                    <div class="col-md-3 col-12">
+                    <div class="col-md-2 col-12">
                         <div class="form-group">
                             <label for="time">Time</label>
                             <input class="form-control border p-2" type="time" name="time[]" required>
@@ -235,6 +241,12 @@
                         <div class="form-group">
                             <label for="qty">Qty</label>
                             <input class="form-control border p-2" type="number" name="qty[]" required>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-12">
+                        <div class="form-group">
+                            <label for="remarks">Remarks</label>
+                            <input class="form-control border p-2" type="text" name="remarks[]">
                         </div>
                     </div>
                     <div class="col-md-1 col-12 mt-2">
@@ -258,6 +270,7 @@
                 dropdownAutoWidth: false
             });
         }
+
 
         function removeFormRow(button) {
             $(button).closest('.row').remove();
