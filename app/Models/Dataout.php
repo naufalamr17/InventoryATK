@@ -17,5 +17,6 @@ class Dataout extends Model
         'code',
         'qty',
         'pic',
+        'remarks',
     ];
 }

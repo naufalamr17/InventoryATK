@@ -182,6 +182,7 @@
                                             <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Name') }}</th>
                                             <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Unit') }}</th>
                                             <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Location') }}</th>
+                                            <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Remarks') }}</th>
                                             @if (Auth::check() && (Auth::user()->status == 'Administrator' || Auth::user()->status == 'Super Admin'))
                                             <th class="text-center text-secondary text-base font-weight-bolder opacity-7">{{ __('Action') }}</th>
                                             @endif
@@ -264,6 +265,14 @@
                     {
                         data: 'location',
                         name: 'location'
+                    },
+                    {
+                        data: 'remarks',
+                        name: 'remarks',
+                        render: function(data, type, row) {
+                            // Tampilkan '-' jika data kosong atau null
+                            return data ? data : '-';
+                        }
                     },
                     @if(Auth::check() && (Auth::user() -> status == 'Administrator' || Auth::user() -> status == 'Super Admin')) {
                         data: 'action',
