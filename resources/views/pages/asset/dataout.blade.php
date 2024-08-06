@@ -141,6 +141,14 @@
                                     @endforeach
                                 </select>
                             </div>
+
+                            <div class="mb-2 me-2">
+                                <input type="date" class="form-control border p-2" name="startDate" id="startDate" placeholder="Start Date">
+                            </div>
+                            <div class="mb-2 me-2">
+                                <input type="date" class="form-control border p-2" name="endDate" id="endDate" placeholder="End Date">
+                            </div>
+
                             @if (Auth::check() && (Auth::user()->status != 'Viewers' && Auth::user()->status != 'Auditor'))
                             <div class="ms-auto mb-2">
                                 <button id="exportExcelButton" class="btn bg-gradient-dark mb-0">
@@ -213,7 +221,13 @@
             var table = $('#inventoryTable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('data_out') }}",
+                ajax: {
+            url: "{{ route('data_out') }}",
+            data: function(d) {
+                d.startDate = $('#startDate').val();
+                d.endDate = $('#endDate').val();
+            }
+        },
                 columns: [{
                         data: 'periode',
                         name: 'period'
@@ -318,6 +332,11 @@
                 }
             });
 
+            // Event handler for date range filter
+            $('#startDate, #endDate').on('change', function() {
+        table.draw();
+    });
+
             // Export to Excel functionality
             $('#exportExcelButton').on('click', function() {
                 const sheetName = 'Report';
@@ -337,7 +356,7 @@
                 const range = XLSX.utils.decode_range(ws['!ref']);
 
                 // Kolom yang ingin diexport (indeks kolom dimulai dari 0)
-                const columnsToExport = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+                const columnsToExport = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 
                 const filteredData = [];
                 for (let R = range.s.r; R <= range.e.r; ++R) {

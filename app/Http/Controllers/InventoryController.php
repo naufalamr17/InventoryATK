@@ -184,46 +184,67 @@ class InventoryController extends Controller
 
     public function dataout(Request $request)
     {
+        // dd($request->startDate);
         if ($request->ajax()) {
             // Query inventaris berdasarkan status pengguna
             if (Auth::user()->status == 'Administrator' || Auth::user()->status == 'Super Admin' || Auth::user()->status == 'Auditor' || Auth::user()->hirar == 'Manager' || Auth::user()->hirar == 'Deputy General Manager') {
-                $inventory = DB::table('dataouts')
-                    ->selectRaw('dataouts.*, inventory_totals.location, inventory_totals.name, inventory_totals.unit, 
+                if ($request->has('startDate') && $request->has('endDate') && !empty($request->get('startDate')) && !empty($request->get('endDate'))) {
+                    $startDate = $request->get('startDate');
+                    $endDate = $request->get('endDate');
+
+                    $inventory = DB::table('dataouts')
+                        ->selectRaw('dataouts.*, inventory_totals.location, inventory_totals.name, inventory_totals.unit, 
+                            IFNULL(employees.nama, "NaN") as nama, 
+                            IFNULL(employees.area, "NaN") as area, 
+                            IFNULL(employees.dept, "NaN") as dept, 
+                            IFNULL(employees.jabatan, "NaN") as jabatan')
+                        ->join('inventory_totals', 'dataouts.code', '=', 'inventory_totals.code')
+                        ->leftJoin('employees', 'dataouts.nik', '=', 'employees.nik')
+                        ->whereBetween('dataouts.date', [$startDate, $endDate])
+                        ->orderBy('dataouts.date', 'desc')
+                        ->get();
+                } else {
+                    $inventory = DB::table('dataouts')
+                        ->selectRaw('dataouts.*, inventory_totals.location, inventory_totals.name, inventory_totals.unit, 
                 IFNULL(employees.nama, "NaN") as nama, 
                 IFNULL(employees.area, "NaN") as area, 
                 IFNULL(employees.dept, "NaN") as dept, 
                 IFNULL(employees.jabatan, "NaN") as jabatan')
-                    ->join('inventory_totals', 'dataouts.code', '=', 'inventory_totals.code')
-                    ->leftJoin('employees', 'dataouts.nik', '=', 'employees.nik')
-                    ->orderBy('dataouts.date', 'desc')
-                    ->get();
+                        ->join('inventory_totals', 'dataouts.code', '=', 'inventory_totals.code')
+                        ->leftJoin('employees', 'dataouts.nik', '=', 'employees.nik')
+                        ->orderBy('dataouts.date', 'desc')
+                        ->get();
+                }
             } else {
-                $inventory = DB::table('dataouts')
-                    ->selectRaw('dataouts.*, inventory_totals.location, inventory_totals.name, inventory_totals.unit, 
+                if ($request->has('startDate') && $request->has('endDate') && !empty($request->get('startDate')) && !empty($request->get('endDate'))) {
+                    $startDate = $request->get('startDate');
+                    $endDate = $request->get('endDate');
+                    $inventory = DB::table('dataouts')
+                        ->selectRaw('dataouts.*, inventory_totals.location, inventory_totals.name, inventory_totals.unit, 
                 IFNULL(employees.nama, "NaN") as nama, 
                 IFNULL(employees.area, "NaN") as area, 
                 IFNULL(employees.dept, "NaN") as dept, 
                 IFNULL(employees.jabatan, "NaN") as jabatan')
-                    ->join('inventory_totals', 'dataouts.code', '=', 'inventory_totals.code')
-                    ->leftJoin('employees', 'dataouts.nik', '=', 'employees.nik')
-                    ->where('location', Auth::user()->location)
-                    ->orderBy('dataouts.date', 'desc')
-                    ->get();
+                        ->join('inventory_totals', 'dataouts.code', '=', 'inventory_totals.code')
+                        ->leftJoin('employees', 'dataouts.nik', '=', 'employees.nik')
+                        ->whereBetween('dataouts.date', [$startDate, $endDate])
+                        ->where('location', Auth::user()->location)
+                        ->orderBy('dataouts.date', 'desc')
+                        ->get();
+                } else {
+                    $inventory = DB::table('dataouts')
+                        ->selectRaw('dataouts.*, inventory_totals.location, inventory_totals.name, inventory_totals.unit, 
+                IFNULL(employees.nama, "NaN") as nama, 
+                IFNULL(employees.area, "NaN") as area, 
+                IFNULL(employees.dept, "NaN") as dept, 
+                IFNULL(employees.jabatan, "NaN") as jabatan')
+                        ->join('inventory_totals', 'dataouts.code', '=', 'inventory_totals.code')
+                        ->leftJoin('employees', 'dataouts.nik', '=', 'employees.nik')
+                        ->where('location', Auth::user()->location)
+                        ->orderBy('dataouts.date', 'desc')
+                        ->get();
+                }
             }
-
-            // Mengubah nilai $inventory->nik menjadi string yang berisi informasi dari employees
-            // $inventory->transform(function ($item) {
-            //     $nik = $item->nik;
-            //     $nama = $item->nama;
-            //     $area = $item->area;
-            //     $dept = $item->dept;
-            //     $jabatan = $item->jabatan;
-
-            //     // Format string sesuai kebutuhan, misalnya:
-            //     $item->nik = "$nik|$nama|$area|$dept|$jabatan";
-
-            //     return $item;
-            // });
 
             $inventory = $inventory->map(function ($inv) {
                 // Menetapkan variabel action berdasarkan status pengguna
