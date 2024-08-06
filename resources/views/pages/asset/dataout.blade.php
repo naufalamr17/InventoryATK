@@ -222,12 +222,12 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-            url: "{{ route('data_out') }}",
-            data: function(d) {
-                d.startDate = $('#startDate').val();
-                d.endDate = $('#endDate').val();
-            }
-        },
+                    url: "{{ route('data_out') }}",
+                    data: function(d) {
+                        d.startDate = $('#startDate').val();
+                        d.endDate = $('#endDate').val();
+                    }
+                },
                 columns: [{
                         data: 'periode',
                         name: 'period'
@@ -334,8 +334,8 @@
 
             // Event handler for date range filter
             $('#startDate, #endDate').on('change', function() {
-        table.draw();
-    });
+                table.draw();
+            });
 
             // Export to Excel functionality
             $('#exportExcelButton').on('click', function() {
