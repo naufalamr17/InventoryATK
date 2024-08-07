@@ -95,12 +95,19 @@
 
                                         <div class="form-group">
                                             <label for="category">Category</label>
-                                            <select id="category" class="form-control border p-2" name="category" readonly>
-                                                <option value="" disabled>Select Category</option>
+                                            <select id="category" class="form-control border p-2" name="category">
+                                                @if(isset($in))
                                                 <option value="ATK" {{ $in->category == 'ATK' ? 'selected' : 'disabled' }}>ATK</option>
                                                 <option value="PRL" {{ $in->category == 'PRL' ? 'selected' : 'disabled' }}>PRL</option>
                                                 <option value="SRGM" {{ $in->category == 'SRGM' ? 'selected' : 'disabled' }}>SRGM</option>
                                                 <option value="AK" {{ $in->category == 'AK' ? 'selected' : 'disabled' }}>AK</option>
+                                                @else
+                                                <option value="" selected disabled>Select Category</option>
+                                                <option value="ATK">ATK</option>
+                                                <option value="PRL">PRL</option>
+                                                <option value="SRGM">SRGM</option>
+                                                <option value="AK">AK</option>
+                                                @endif
                                             </select>
                                             @if ($errors->has('category'))
                                             <div class="text-danger mt-2">{{ $errors->first('category') }}</div>
@@ -135,9 +142,15 @@
                                             <label for="vendor">Vendor</label>
                                             <select id="vendor" class="form-control border p-2" name="vendor" required>
                                                 <option value="" selected disabled>Select Vendor</option>
+                                                @if(isset($in))
                                                 @foreach ($vendors as $vendor)
                                                 <option value="{{ $vendor->id }}" {{ $in->vendor_id == $vendor->id ? 'selected' : '' }}>{{ $vendor->nama }}</option>
                                                 @endforeach
+                                                @else
+                                                @foreach ($vendors as $vendor)
+                                                <option value="{{ $vendor->id }}">{{ $vendor->nama }}</option>
+                                                @endforeach
+                                                @endif
                                             </select>
                                             @if ($errors->has('vendor'))
                                             <div class="text-danger mt-2">{{ $errors->first('vendor') }}</div>

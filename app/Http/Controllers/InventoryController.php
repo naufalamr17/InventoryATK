@@ -367,8 +367,10 @@ class InventoryController extends Controller
     public function in($id)
     {
         $inventory = InventoryTotal::findOrFail($id);
-        $in = Inventory::where('code', $inventory->code)->firstOrFail();
+        $in = Inventory::where('code', $inventory->code)->first();
         $vendors = vendor::all();
+
+        // dd($inventory);
 
         return view('pages.asset.editasset', compact('inventory', 'in', 'vendors'));
     }
