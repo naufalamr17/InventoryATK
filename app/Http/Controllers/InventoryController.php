@@ -93,9 +93,11 @@ class InventoryController extends Controller
 
         // Generate code based on category and iteration
         $category = $request->input('category');
-        $lastCode = Inventory::where('category', $category)->orderBy('id', 'desc')->first();
-        $nextId = $lastCode ? intval(substr($lastCode->code, -3)) + 1 : 1;
+        $lastCode = Inventory::where('category', $category)->orderBy('code', 'desc')->first();
+        $nextId = $lastCode ? intval(substr($lastCode->code, strlen($category) + 1)) + 1 : 1;
         $code = $category . '-' . str_pad($nextId, 3, '0', STR_PAD_LEFT);
+
+        // dd($code);
 
         // Assuming Inventory model is used for storing inventory data
         $inventory = new Inventory();
