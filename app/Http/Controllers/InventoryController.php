@@ -368,7 +368,7 @@ class InventoryController extends Controller
                     $lowStockItems[] = [
                         'code' => $validatedData['code'][$i],
                         'name' => $inventoryTotal->name,
-                        'remaining_qty' => $inventoryTotal->qty,
+                        'qty' => $inventoryTotal->qty,
                     ];
                 }
             } else {

@@ -5,7 +5,6 @@
 </head>
 <body>
     <h1>Notification: Low Inventory</h1>
-    <!-- <p>Dear {{ $details['pic'] }},</p> -->
     <p>The stock for the following inventory items is running low:</p>
 
     <table border="1" cellpadding="10" cellspacing="0">
@@ -21,7 +20,7 @@
                 <tr>
                     <td>{{ $item['code'] }}</td>
                     <td>{{ $item['name'] }}</td>
-                    <td>{{ $item['remaining_qty'] }}</td>
+                    <td>{{ $item['qty'] }}</td>
                 </tr>
             @endforeach
         </tbody>
