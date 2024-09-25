@@ -29,7 +29,7 @@ class InventoryNotification extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Inventory Notification',
+            subject: 'Notification: Low Inventory',
         );
     }
 
