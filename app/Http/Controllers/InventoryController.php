@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Imports\DataKeluarImport;
 use App\Imports\YourDataImport;
+use App\Mail\InventoryNotification;
 use App\Models\Dataout;
 use App\Models\employee;
 use App\Models\inventory;
@@ -14,6 +15,7 @@ use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\Calculation\Category;
@@ -360,9 +362,35 @@ class InventoryController extends Controller
             if ($inventoryTotal) {
                 $inventoryTotal->qty -= $validatedData['qty'][$i];
                 $inventoryTotal->save();
+
+                // Jika qty < 5, tambahkan ke array $lowStockItems
+                if ($inventoryTotal->qty < 5) {
+                    $lowStockItems[] = [
+                        'code' => $validatedData['code'][$i],
+                        'name' => $inventoryTotal->name,
+                        'remaining_qty' => $inventoryTotal->qty,
+                    ];
+                }
             } else {
                 return redirect()->back()->withErrors(['code' => 'InventoryTotal entry not found for code ' . $validatedData['code'][$i]]);
             }
+        }
+
+        // dd($lowStockItems);
+
+        if (!empty($lowStockItems)) {
+            $details = [
+                'pic' => $validatedData['pic'],
+                'nik' => $validatedData['nik'],
+                'items' => $lowStockItems
+            ];
+
+            Mail::to(['reggie.hendriyati@mlpmining.com', 'info@mlpmining.com'])
+                ->cc(['endra.putra@mlpmining.com', 'muhamad.sayadih@mlpmining.com', 'lutfi.yasinta@mlpmining.com', 'Naufal.hidayatullah@mlpmining.com'])
+                ->send(new InventoryNotification($details));
+            // Mail::to(['naufal.mtsyurja91@gmail.com'])
+            //     ->cc(['muhamad.sayadih@mlpmining.com', 'Naufal.hidayatullah@mlpmining.com'])
+            //     ->send(new InventoryNotification($details));
         }
 
         return redirect()->route('data_out')->with('success', 'Data has been stored successfully.');

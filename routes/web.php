@@ -25,9 +25,25 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
 use App\Http\Controllers\VendorController;
+use App\Mail\InventoryNotification;
 use App\Models\dispose;
 use App\Models\inventory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+
+Route::get('/send-email', function () {
+    $details = [
+        'title' => 'Inventory ATK Notification',
+        'user' => 'Test',
+        'body' => 'https://inventoryatk.mlpmining.com/public/sign-in'
+    ];
+
+    // dd($details);
+
+    Mail::to('naufal.mtsyurja91@gmail.com')->send(new InventoryNotification($details));
+
+    return 'Email has been sent!';
+});
 
 Route::get('/', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 Route::get('/home', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
