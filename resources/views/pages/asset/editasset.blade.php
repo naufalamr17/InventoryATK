@@ -132,6 +132,7 @@
                                                 <option value="ROLL" {{ $inventory->unit == 'ROLL' ? 'selected' : 'disabled' }}>ROLL</option>
                                                 <option value="DOS" {{ $inventory->unit == 'DOS' ? 'selected' : 'disabled' }}>DOS</option>
                                                 <option value="SET" {{ $inventory->unit == 'SET' ? 'selected' : 'disabled' }}>SET</option>
+                                                <option value="PAD" {{ $inventory->unit == 'PAD' ? 'selected' : 'disabled' }}>PAD</option>
                                             </select>
                                             @if ($errors->has('unit'))
                                             <div class="text-danger mt-2">{{ $errors->first('unit') }}</div>
