@@ -129,6 +129,7 @@
                                                 <option value="DOS">DOS</option>
                                                 <option value="SET">SET</option>
                                                 <option value="PAD">PAD</option>
+                                                <option value="BOTOL">BOTOL</option>
                                             </select>
                                             @if ($errors->has('unit'))
                                             <div class="text-danger mt-2">{{ $errors->first('unit') }}</div>
