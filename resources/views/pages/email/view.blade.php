@@ -4,7 +4,7 @@
     <title>Inventory Low Notification</title>
 </head>
 <body>
-    <h1>Low Inventory</h1>
+    <h1>Low Inventory MLP</h1>
     <p>The stock for the following inventory items is running low:</p>
 
     <table border="1" cellpadding="10" cellspacing="0">
