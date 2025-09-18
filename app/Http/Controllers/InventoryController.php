@@ -386,7 +386,7 @@ class InventoryController extends Controller
             ];
 
             Mail::to(['reggie.hendriyati@mlpmining.com', 'info@mlpmining.com'])
-                ->cc(['endra.putra@mlpmining.com', 'muhamad.sayadih@mlpmining.com', 'lutfi.yasinta@mlpmining.com', 'Naufal.hidayatullah@mlpmining.com'])
+                ->cc(['endra.putra@mlpmining.com', 'muhamad.sayadih@mlpmining.com', 'Naufal.hidayatullah@mlpmining.com'])
                 ->send(new InventoryNotification($details));
             // Mail::to(['naufal.mtsyurja91@gmail.com'])
             //     ->cc(['muhamad.sayadih@mlpmining.com', 'Naufal.hidayatullah@mlpmining.com'])

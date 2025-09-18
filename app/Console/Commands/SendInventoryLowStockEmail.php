@@ -44,7 +44,7 @@ class SendInventoryLowStockEmail extends Command
             // Mail::to(['Naufal.hidayatullah@mlpmining.com'])
             //     ->send(new InventoryNotification($details));
             Mail::to(['reggie.hendriyati@mlpmining.com', 'info@mlpmining.com'])
-                ->cc(['endra.putra@mlpmining.com', 'muhamad.sayadih@mlpmining.com', 'lutfi.yasinta@mlpmining.com', 'Naufal.hidayatullah@mlpmining.com'])
+                ->cc(['endra.putra@mlpmining.com', 'muhamad.sayadih@mlpmining.com', 'Naufal.hidayatullah@mlpmining.com'])
                 ->send(new InventoryNotification($details));
 
             $this->info('Low stock email has been sent successfully.');
