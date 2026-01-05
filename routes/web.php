@@ -46,8 +46,8 @@ Route::get('/send-email', function () {
     return 'Email has been sent!';
 });
 
-Route::get('/', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
-Route::get('/home', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
+Route::get('/', [DashboardController::class, 'index'])->middleware('auth');
+Route::get('/home', [DashboardController::class, 'index'])->middleware('auth');
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 // Route::get('sign-up', [RegisterController::class, 'create'])->middleware('guest')->name('register');
 // Route::post('sign-up', [RegisterController::class, 'store'])->middleware('guest');
